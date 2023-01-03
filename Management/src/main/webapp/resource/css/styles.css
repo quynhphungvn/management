@@ -1,0 +1,22 @@
+nav {
+    width: 80px;
+    height: 100vh;
+    background-color: #aaa;
+}
+#mindmap-image {
+    height: 100vh;
+    overflow: auto;
+}
+#mindmap div:nth-child(2) {
+    height: 200px;
+    overflow: auto;
+    margin: 2rem 0;
+}
+#mindmap-node div:nth-child(1) {
+    height: 200px;
+    overflow: auto;
+    margin: 2rem 0;
+}
+#mindmap-node div:nth-child(2) {
+    margin-bottom: 2rem;
+}
