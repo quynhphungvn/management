@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MindMap {
-	private long id;
+	private int id;
 	private String name;
 	private String textContent;
 }

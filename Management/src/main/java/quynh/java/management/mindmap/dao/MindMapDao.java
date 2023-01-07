@@ -43,18 +43,19 @@ public class MindMapDao {
 	
 	public int addNewMindMap(MindMap mindmap) {
 		int result = 0;
-		if (getMindMapByName(mindmap.getName()) != null) {
+		if (getMindMapByName(mindmap.getName()) == null) {
 			String sql = "insert into mindmap (name, text_content) values (?,?);";
 			try {
 				PreparedStatement pstm = conn.prepareStatement(sql);
 				pstm.setString(1, mindmap.getName());
 				pstm.setString(2, mindmap.getTextContent());
-				result = pstm.executeUpdate();	
+				result = pstm.executeUpdate();					
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		System.out.println(result);
 		return result;
 	}
 	
@@ -77,6 +78,7 @@ public class MindMapDao {
 		}
 		return mindmap;
 	}
+	
 	public MindMap getMindMapByName(String name) {
 		MindMap mindmap = null;
 		String sql = "select id, name, text_content from mindmap where name=?;";
@@ -95,5 +97,36 @@ public class MindMapDao {
 			e.printStackTrace();
 		}
 		return mindmap;
+	}
+	public int deleteMindMapByName(String name) {
+		int result = 0;
+		String sql = "delete from mindmap where name=?;";
+		try {
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setString(1, name);
+			result = pstm.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	public int updateMindMap(MindMap mindmap, String mindMapName) {
+		int result = 0;
+		if (getMindMapByName(mindmap.getName()) != null) {
+			String sql = "update mindmap set name=?, text_content=? where name=?;";
+			try {
+				PreparedStatement pstm = conn.prepareStatement(sql);
+				pstm.setString(1, mindmap.getName());
+				pstm.setString(2, mindmap.getTextContent());
+				pstm.setString(3, mindMapName);
+				result = pstm.executeUpdate();					
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println(result);
+		return result;
 	}
 }

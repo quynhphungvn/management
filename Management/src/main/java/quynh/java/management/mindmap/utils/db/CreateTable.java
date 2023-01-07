@@ -11,7 +11,7 @@ public class CreateTable {
 			conn = DBUtils.getMySQLConnection();
 			String sqlMindMap = "create table if not exists mindmap("
 					+ " id int not null auto_increment,"
-					+ "	name varchar(100) not null,"
+					+ "	name varchar(100) not null unique,"
 					+ " text_content text,"
 					+ " primary key (id))";
 			this.createTable(sqlMindMap, conn);
