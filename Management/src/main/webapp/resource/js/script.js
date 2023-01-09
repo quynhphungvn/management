@@ -193,6 +193,7 @@ function clearMindMapForm() {
 	document.getElementById("mindmap-save-btn").disabled = false;
 	document.getElementById("mindmap-update-btn").disabled = true;
 	document.getElementById("mindmap-delete-btn").disabled = true;
+	document.getElementById("mindmap-input").value = "@startmindmap \n\n@endmindmap";
 }
 
 function getAllMindNode(mindMapName) {

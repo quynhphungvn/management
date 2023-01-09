@@ -40,6 +40,8 @@ public class MindMapController extends HttpServlet {
 		processGetRequest(request, response);
 	}
 	private void processGetRequest(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println(request.getServerName());
+		System.out.println(request.getServletContext().getContextPath());
 		String action = request.getParameter("action");
 		if (action == null) {
 			List<String> listMindMapName = mindMapDao.getAllMindMapName();
