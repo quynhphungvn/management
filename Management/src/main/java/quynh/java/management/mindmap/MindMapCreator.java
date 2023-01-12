@@ -11,6 +11,13 @@ public class MindMapCreator {
 	public boolean createPNG(String inputText, String path) {
 		boolean result = true;
 		File file = new File(path + "/resource/temp/temp.png");
+		if (!file.exists())
+			try {
+				file.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		OutputStream png = null;
 		try {
 			png = new FileOutputStream(file);

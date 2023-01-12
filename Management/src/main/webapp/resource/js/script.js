@@ -4,6 +4,7 @@ var currentMindMap = {};
 var currentNode = {};
 var myOffcanvas = document.getElementById('myOffcanvas')
 var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas)
+
 function showNodeContent(event) {
    let coordinateClick = {
    		x: event.offsetX,
@@ -24,12 +25,18 @@ function showNodeContent(event) {
 	}
    	axios.get(url, config)
 	  .then(function (response) {
+	  currentNode = response.data;
 	  	let offCanvasHeaderEl = document.getElementById("offcanvasRightLabel");
 	  	offCanvasHeaderEl.innerHTML = response.data.name;
 	  	let offCanvasNodeEl = document.getElementById("offcanvas-note");
 	  	offCanvasNodeEl.innerHTML = response.data.note;
-	    console.log(response);
+	    console.log("xxx", response.data);
+	    let delta = JSON.parse(response.data.article);
+		let tempQuill = new Quill(document.createElement("div"));
+		tempQuill.setContents(delta);
+    	document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML;
 	    bsOffcanvas.show();
+	    quill.setContents(delta);
 	  })
 	  .catch(function (error) {
 	    console.log(error);
@@ -245,7 +252,7 @@ function addNewMindNode() {
 			alert(response.data);
 		})
 		.catch(function (error) {
-			alert(response.data);
+			alert(error.data);
 		});
 	}
 	 else
@@ -273,6 +280,11 @@ function getMindNode(nodeName) {
 		document.getElementById("mindnode-save-btn").disabled = true;
 		document.getElementById("mindnode-update-btn").disabled = false;
 		document.getElementById("mindnode-delete-btn").disabled = false;
+		let delta = response.data.article;
+		let tempQuill = new Quill(document.createElement("div"));
+		tempQuill.setContents(JSON.parse(delta));
+    	document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML;
+    	quill.setContents(delta);
 	 })	
 }
 function updateMindNode() {
@@ -308,7 +320,7 @@ function updateMindNode() {
 			alert(response.data);
 		})
 		.catch(function (error) {
-			alert(response.data);
+			alert(error.data);
 		});
 	}
 	 else
@@ -351,4 +363,33 @@ function clearMindNodeForm() {
 		document.getElementById("mindnode-save-btn").disabled = false;
 		document.getElementById("mindnode-update-btn").disabled = true;
 		document.getElementById("mindnode-delete-btn").disabled = true;
+}
+function showPost() {
+	/*var html = quill.root.innerHTML;*/
+	let tempQuill = new Quill(document.createElement("div"));
+	tempQuill.setContents(quill.getContents());
+    document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML;
+}
+function saveNodeArticle() {
+	console.log("current node: ",currentNode);
+	let delta = quill.getContents();
+	let config = {
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Cache-Control': 'no-store'
+		}
+	}
+	let data = {
+		action: "update-article",
+		nodeid: currentNode.id,
+		article: JSON.stringify(delta)	
+	}
+	let url = '/Management/mindnode/';
+			axios.post(url, data, config)
+			  .then(function (response) {
+			    alert(response.data);
+			  })
+			  .catch(function (error) {
+			    alert(error.data);
+			  });
 }

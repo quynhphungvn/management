@@ -21,6 +21,7 @@ public class CreateTable {
 					+ "name varchar(100) not null unique,"
 					+ "coordinate json not null,"
 					+ "note text,"
+					+ "article JSON,"
 					+ "mindmap_id int not null,"
 					+ "primary key (id))";
 			this.createTable(sqlMindNode, conn);

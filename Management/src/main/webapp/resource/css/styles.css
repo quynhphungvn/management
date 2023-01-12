@@ -20,3 +20,16 @@
 #mindmap-node div:nth-child(2) {
     margin-bottom: 2rem;
 }
+.offcanvas {
+	width: 500px;
+}
+#node-article {
+	height: 700px;
+	width: 100%;
+	overflow: auto;
+	border: 1px solid #aaa;
+	padding: 1rem;
+}
+#node-post {
+	width: 100%;
+}

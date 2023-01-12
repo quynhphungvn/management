@@ -8,12 +8,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document</title>
-<link rel="stylesheet" href="/Management/resource/css/styles.css">
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
+<link rel="stylesheet" href="/Management/resource/css/styles.css">
 </head>
 
 <body>
@@ -141,12 +142,17 @@
 				</div>
 				<div class="offcanvas-body">
 					<div id="offcanvas-note"></div>
+					<div id="node-article">
+						<div id="node-post">
+						
+						</div>
+					</div>
 					<div>
 						<button type="button" class="btn btn-primary"
-							data-bs-toggle="modal" data-bs-target="#node-post">Post</button>
-						<div class="modal fade" id="node-post" tabindex="-1"
+							data-bs-toggle="modal" data-bs-target="#node-post-editor">Edit</button>
+						<div class="modal fade" id="node-post-editor" tabindex="-1"
 							aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog modal-xl">
+							<div class="modal-dialog modal-md">
 								<div class="modal-content">
 									<div class="modal-header">
 										<h5 class="modal-title" id="exampleModalLabel">Modal
@@ -155,19 +161,21 @@
 											data-bs-dismiss="modal" aria-label="Close"></button>
 									</div>
 									<div class="modal-body">...
-																	
-									
+										<div id="editor">
+										  <p>Hello World!</p>
+										  <p>Some initial <strong>bold</strong> text</p>
+										  <p><br></p>
+										</div>																
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary"
 											data-bs-dismiss="modal">Close</button>
-										<button type="button" class="btn btn-primary">Save
-											changes</button>
+										<button type="button" class="btn btn-primary" onclick="saveNodeArticle()">Save</button>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</div>					
 				</div>
 			</div>
 
@@ -182,6 +190,39 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
 		integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
 		crossorigin="anonymous"></script>
+	<!-- Include the Quill library -->
+	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+	<script src="/Management/resource/js/image-resize.min.js"></script>
+	<!-- Initialize Quill editor -->
+	<script>
+	var toolbarOptions = [
+		['bold', 'italic', 'underline', 'strike'],
+		['blockquote', 'code-block'],
+		[{'header': 1}, {'header': 2}],
+		[{'list': 'ordered'}, {'list': 'bullet'}],
+		[{'script': 'sub'}, {'script': 'super'}],
+		[{'indent': '-1'}, {'indent': '+1'}],
+		[{'direction': 'rtl'}],
+		[{'size': ['small', false, 'large', 'huge']}],
+		['link', 'image', 'video', 'formula'],
+		[{'color': []}, {'background': []}],
+		[{'font': []}],
+		[{'align': []}]
+		];
+	var options = {
+			  debug: 'info',
+			  modules: {
+			    toolbar: toolbarOptions,
+			    imageResize: {
+			          displaySize: true
+			        },
+			  },
+			  placeholder: 'Textttt',
+			  readOnly: false,
+			  theme: 'snow'
+			};
+	  var quill = new Quill('#editor', options);
+	</script>
 	<script src="/Management/resource/js/script.js"></script>
 
 </body>

@@ -62,6 +62,16 @@ public class MindMapNodeController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if (action.equals("get-article")) {
+			int nodeId = Integer.parseInt(request.getParameter("nodeid"));
+			String article = mindNodeDao.getMindNodeArticle(nodeId);
+			try {
+				response.getOutputStream().print(gson.toJson(article));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}  
 	}
 	/**
@@ -83,6 +93,7 @@ public class MindMapNodeController extends HttpServlet {
 			mindNode.setName(name);
 			mindNode.setCoordinate(coordinate);
 			mindNode.setNote(note);
+			mindNode.setArticle(null);
 			mindNode.setMindMapId(mm.getId());
 			int result = mindNodeDao.addNewNode(mindNode);
 			if (result == 1)
@@ -133,6 +144,25 @@ public class MindMapNodeController extends HttpServlet {
 			String mindMapName = request.getParameter("mindmapname");
 			MindMap mm = mindMapDao.getMindMapByName(mindMapName);
 			int result = mindNodeDao.deleteNode(nodeName, mm.getId());
+			if (result == 1)
+				try {
+					response.getOutputStream().print("OK");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			else {
+				try {
+					response.getOutputStream().print("FAIL");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} else if (action.equals("update-article")) {
+			int nodeId = Integer.parseInt(request.getParameter("nodeid"));
+			String article = request.getParameter("article");
+			int result = mindNodeDao.updateArticle(nodeId, article);
 			if (result == 1)
 				try {
 					response.getOutputStream().print("OK");

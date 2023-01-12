@@ -10,5 +10,6 @@ public class MindNode {
 	private String name;
 	private String coordinate;
 	private String note;
+	private String article;
 	private int mindMapId;
 }
