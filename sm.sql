@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: sm
 -- ------------------------------------------------------
--- Server version	8.0.31-0ubuntu0.20.04.1
+-- Server version	8.0.31-0ubuntu0.20.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,7 +27,7 @@ CREATE TABLE `mindmap` (
   `name` varchar(100) NOT NULL,
   `text_content` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `mindmap` (
 
 LOCK TABLES `mindmap` WRITE;
 /*!40000 ALTER TABLE `mindmap` DISABLE KEYS */;
-INSERT INTO `mindmap` VALUES (2,'test 2','@startmindmap\n* root node\n** abc\n	* some first level node\n		* second level node\n		* another second level node\n	* another first level node\n@endmindmap\n\n');
+INSERT INTO `mindmap` VALUES (4,'Java JDBC','@startmindmap \n+ JDBC\n-- Transactions\n-- Statement\n--- Statement\n--- Prepared Statement\n--- Callable Statement\n--- Statment caching\n++ Resulset\n++ Metadata\n@endmindmap');
 /*!40000 ALTER TABLE `mindmap` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,10 +52,11 @@ CREATE TABLE `mindnode` (
   `name` varchar(100) NOT NULL,
   `coordinate` json NOT NULL,
   `note` text,
+  `article` json DEFAULT NULL,
   `mindmap_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +65,6 @@ CREATE TABLE `mindnode` (
 
 LOCK TABLES `mindnode` WRITE;
 /*!40000 ALTER TABLE `mindnode` DISABLE KEYS */;
-INSERT INTO `mindnode` VALUES (1,'root','{\"x1\": \"18\", \"x2\": \"95\", \"y1\": \"80\", \"y2\": \"113\"}','abc',2);
 /*!40000 ALTER TABLE `mindnode` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,4 +296,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-07  9:06:34
+-- Dump completed on 2023-01-14  3:58:59
