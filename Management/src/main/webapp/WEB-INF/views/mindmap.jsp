@@ -14,7 +14,7 @@
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
-<link rel="stylesheet" href="/Management/resource/css/styles.css">
+<link rel="stylesheet" href="/Management/resources/mindmap/css/styles.css">
 </head>
 
 <body>
@@ -61,7 +61,7 @@
 								<span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
 								<input type="text" class="form-control" id="mindmap-name">
 								<button type="button" class="btn btn-primary"
-									onclick="checkMindMap()">
+									onclick="testMindMap()">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 										fill="currentColor" class="bi bi-arrow-clockwise"
 										viewBox="0 0 16 16">
@@ -84,7 +84,7 @@
 								<button id="mindmap-clear-btn" class="btn btn-primary"
 									onclick="clearMindMapForm()">Clear</button>
 								<button id="mindmap-save-btn" class="btn btn-primary"
-									onclick="saveNewMindMap()">Save</button>
+									onclick="addMindMap()">Save</button>
 								<button id="mindmap-update-btn" class="btn btn-primary"
 									onclick="updateMindMap()" disabled>Update</button>
 								<button id="mindmap-delete-btn" class="btn btn-primary"
@@ -192,7 +192,7 @@
 		crossorigin="anonymous"></script>
 	<!-- Include the Quill library -->
 	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-	<script src="/Management/resource/js/image-resize.min.js"></script>
+	<script src="/Management/resource/mindmap/js/image-resize.min.js"></script>
 	<!-- Initialize Quill editor -->
 	<script>
 	var toolbarOptions = [
@@ -223,7 +223,7 @@
 			};
 	  var quill = new Quill('#editor', options);
 	</script>
-	<script src="/Management/resource/js/script.js"></script>
+	<script src="/Management/resources/mindmap/js/script.js"></script>
 
 </body>
 

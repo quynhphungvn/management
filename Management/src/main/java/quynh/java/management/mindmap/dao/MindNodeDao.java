@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import quynh.java.management.mindmap.models.MindNode;
-import quynh.java.management.mindmap.utils.db.DBUtils;
+import quynh.java.management.utils.db.DBConnection;
 
 public class MindNodeDao {
 	private Connection conn;
 
 	public MindNodeDao() {
 		try {
-			conn = DBUtils.getMySQLConnection();
+			conn = DBConnection.getMySQLConnection();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,10 +1,10 @@
-package quynh.java.management.mindmap.utils.db;
+package quynh.java.management.utils.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBUtils {
+public class DBConnection {
 	public static Connection getMySQLConnection() throws SQLException, ClassNotFoundException {
 		String hostName = "localhost";
 		String dbName = "sm";

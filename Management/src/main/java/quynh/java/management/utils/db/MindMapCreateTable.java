@@ -1,14 +1,14 @@
-package quynh.java.management.mindmap.utils.db;
+package quynh.java.management.utils.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class CreateTable {
+public class MindMapCreateTable {
 	public void createAllTable() {
 		Connection conn = null;
 		try {
-			conn = DBUtils.getMySQLConnection();
+			conn = DBConnection.getMySQLConnection();
 			String sqlMindMap = "create table if not exists mindmap("
 					+ " id int not null auto_increment,"
 					+ "	name varchar(100) not null unique,"
@@ -45,7 +45,7 @@ public class CreateTable {
 	}
 	public static void main(String[] args) {
 		System.out.println("Creating table!");
-		CreateTable ct = new CreateTable();
+		MindMapCreateTable ct = new MindMapCreateTable();
 		ct.createAllTable();
 		System.out.println("Creating table end!");
 	}

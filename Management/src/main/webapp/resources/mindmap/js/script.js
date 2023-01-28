@@ -1,7 +1,35 @@
-var mindMapNameGlobal = "";
-var listMindNode = [];
-var currentMindMap = {};
-var currentNode = {};
+let MINDMAP_ACTION = { 
+	GET_MINDMAP : "GET_MINDMAP",
+	ADD_MINDMAP : "ADD_MINDMAP",
+	DELETE_MINDMAP : "DELETE_MINDMAP",
+	UPDATE_MINDMAP : "UPDATE_MINDMAP",
+	GET_MINDNODE : "GET_MINDNODE",
+	GET_ALL_MINDNODE: "GET_ALL_MINDNODE",
+	ADD_MINDNODE : "ADD_MINDNODE",
+	DELETE_MINDNODE : "DELETE_MINDNODE",
+	UPDATE_MINDNODE : "UPDATE_MINDNODE",
+	TEST_MINDMAP : "TEST_MINDMAP",
+	UPDATE_MINDNODE_ARTICLE : "UPDATE_MINDNODE_ARTICLE"
+}
+let MINDMAP_PARAM = {
+	MINDMAP_NAME : "MINDMAP_NAME",
+	MINDMAP_NEW_NAME : "MINDMAP_NEW_NAME",
+	MINDMAP_TEXT_DIA : "MINDMAP_TEXT_DIA"
+}
+let MINDMAP_URL = "/Management/mindmap/";
+let MINDNODE_URL = "/Management/mindnode/";
+let REQUEST_HEADERS = {
+	'Content-Type': 'application/x-www-form-urlencoded',
+	'Cache-Control': 'no-store'
+	
+}
+let currentObj = {
+	mindMapName: "",
+	mindNodeObjs: [],
+	mindMapObj: {},
+	mindNodeObj: {}
+}
+
 var myOffcanvas = document.getElementById('myOffcanvas')
 var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas)
 
@@ -10,14 +38,17 @@ function showNodeContent(event) {
    		x: event.offsetX,
    		y: event.offsetY
    }
-   for (let i = 0; i < listMindNode.length; i++) {
-   	let mindNodeCoordinate = JSON.parse(listMindNode[i].coordinate);
+   for (let i = 0; i < currentObj.mindNodeObjs.length; i++) {
+   	let mindNodeCoordinate = JSON.parse(currentObj.mindNodeObjs[i].coordinate);
    	if (coordinateClick.x > mindNodeCoordinate.x1 
    		&& coordinateClick.x < mindNodeCoordinate.x2 
    		&& coordinateClick.y > mindNodeCoordinate.y1 
    		&& coordinateClick.y < mindNodeCoordinate.y2) 
    	{
-   	let url = '/Management/mindnode/?action=get-node&nodename=' + listMindNode[i].name + '&mindmap=' + mindMapNameGlobal;
+   	let url = MINDNODE_URL 
+				+ '?action=' + MINDMAP_ACTION.GET_MINDNODE 
+				+ '&MINDNODE_NAME=' + currentObj.mindNodeObjs[i].name 
+				+ '&MINDMAP_NAME=' + currentObj.mindMapName;
    	let config = {
 		headers: {
 			'Cache-Control': 'no-store'
@@ -25,18 +56,20 @@ function showNodeContent(event) {
 	}
    	axios.get(url, config)
 	  .then(function (response) {
-	  currentNode = response.data;
+	  currentObj.mindNodeObj = response.data;
 	  	let offCanvasHeaderEl = document.getElementById("offcanvasRightLabel");
 	  	offCanvasHeaderEl.innerHTML = response.data.name;
 	  	let offCanvasNodeEl = document.getElementById("offcanvas-note");
 	  	offCanvasNodeEl.innerHTML = response.data.note;
 	    console.log("xxx", response.data);
+		if (response.data.article) {
 	    let delta = JSON.parse(response.data.article);
 		let tempQuill = new Quill(document.createElement("div"));
 		tempQuill.setContents(delta);
-    	document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML;
-	    bsOffcanvas.show();
+    	document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML; 
 	    quill.setContents(delta);
+	    }
+	    bsOffcanvas.show();
 	  })
 	  .catch(function (error) {
 	    console.log(error);
@@ -49,35 +82,25 @@ function hideNodeContent() {
     nodeContentEl.style.right = "-300px";
 }
 function getCoordinateStart(event) {
-    console.log(event);
     document.getElementById("x1").value = event.offsetX;
     document.getElementById("y1").value = event.offsetY;
 }
 function getCoordinateEnd(event) {
-    console.log(event);
     document.getElementById("x2").value = event.offsetX;
     document.getElementById("y2").value = event.offsetY;
 }
-function checkMindMap() {
+function testMindMap() {
 	let areaText = document.getElementById("mindmap-input");
 	let timeNow = performance.now();
-	let config = {
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Cache-Control': 'no-store'
-		}
-	}
 	let data = {
-		action: "check",
-		text: areaText.value,
-		time: timeNow
+		action: MINDMAP_ACTION.TEST_MINDMAP,
+		MINDMAP_TEXT_DIA: areaText.value
 	}
-	let url = '/Management/mindmap/';
 	if (data.text)
-		axios.post(url, data, config)
+		axios.post(MINDMAP_URL, data, {REQUEST_HEADERS})
 	  	.then(function (response) {
 		    if (response.data == 'OK')
-		    	document.getElementById("mindmap-image-el").src = "/Management/resource/temp/temp.png?" + timeNow;
+		    	document.getElementById("mindmap-image-el").src = "/Management/resources/mindmap/images/mindmap.png?" + timeNow;
 		    else {
 		    	document.getElementById("mindmap-image-el").src = "#";
 		    }
@@ -88,23 +111,16 @@ function checkMindMap() {
   	else 
   		alert("Empty");
 }
-function saveNewMindMap() {
+function addMindMap() {
 	let name = document.getElementById("mindmap-name").value;
 	let areaText = document.getElementById("mindmap-input");
-	let config = {
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Cache-Control': 'no-store'
-		}
-	}
 	let data = {
-		action: "add",
-		name: name,
-		text: areaText.value
+		action: MINDMAP_ACTION.ADD_MINDMAP,
+		MINDMAP_NAME: name,
+		MINDMAP_TEXT_DIA: areaText.value
 	}
-	let url = '/Management/mindmap/';
 	if (name && areaText)
-		axios.post(url, data, config)
+		axios.post(MINDMAP_URL, data, {REQUEST_HEADERS})
 	  .then(function (response) {
 	    alert(response.data);
 	  })
@@ -115,8 +131,9 @@ function saveNewMindMap() {
 	 	alert("Empty");
 }
 function getMindMap(mindMapName) {
-	let timeNow = performance.now();
-	let url = '/Management/mindmap/?action=get-mindmap&name=' + mindMapName;
+	let url = MINDMAP_URL 
+				+ '?action=' + MINDMAP_ACTION.GET_MINDMAP 
+				+ '&MINDMAP_NAME=' + mindMapName;
 	let config = {
 		headers: {
 			'Cache-Control': 'no-store'
@@ -124,40 +141,36 @@ function getMindMap(mindMapName) {
 	}
 	axios.get(url, config)
   	.then(function (response) {
-	    if (response.data != 'FAIL') {
-	    	document.getElementById("mindmap-name").value = response.data.name;
-	    	document.getElementById("mindmap-input").value = response.data.textContent;
-	    	document.getElementById("mindmap-image-el").src = "/Management/resource/temp/temp.png?" + timeNow;
-	    	document.getElementById("mindmap-save-btn").disabled = true;
-	    	document.getElementById("mindmap-update-btn").disabled = false;
-	    	document.getElementById("mindmap-delete-btn").disabled = false;
-	    	currentMindMap = response.data;
-	    }
-	    else {
-	    	document.getElementById("mindmap-image-el").src = "#";
-	    }
+	    updateUiAfterGetMindMap(response);
+	    setCurrentMindMapObjAfterGetMindMap(response.data, mindMapName);
+	   
     })
-    mindMapNameGlobal = mindMapName;
     getAllMindNode(mindMapName);
+}
+function updateUiAfterGetMindMap(response) {
+	let timeNow = performance.now();
+	document.getElementById("mindmap-name").value = response.data.name;
+	document.getElementById("mindmap-input").value = response.data.textContent;
+	document.getElementById("mindmap-image-el").src = "/Management/resources/mindmap/images/mindmap.png?" + timeNow;
+	document.getElementById("mindmap-save-btn").disabled = true;
+	document.getElementById("mindmap-update-btn").disabled = false;
+	document.getElementById("mindmap-delete-btn").disabled = false;
+}
+function setCurrentMindMapObjAfterGetMindMap(mindMapObj, mindMapName) {
+	currentObj.mindMapObj = mindMapObj;
+	currentObj.mindMapName = mindMapName;
 }
 function updateMindMap() {
 	let name = document.getElementById("mindmap-name").value;
 	let areaText = document.getElementById("mindmap-input");
-	let config = {
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Cache-Control': 'no-store'
-		}
-	}
 	let data = {
-		action: "update",
-		name: currentMindMap.name,
-		newname: name,
-		text: areaText.value
+		action: MINDMAP_ACTION.UPDATE_MINDMAP,
+		MINDMAP_NAME: currentObj.mindMapObj.name,
+		MINDMAP_NEW_NAME: name,
+		MINDMAP_TEXT_DIA: areaText.value
 	}
-	let url = '/Management/mindmap/';
 	if (name && areaText)
-		axios.post(url, data, config)
+		axios.post(MINDMAP_URL, data, {REQUEST_HEADERS})
 	  .then(function (response) {
 	    alert(response.data);
 	  })
@@ -169,20 +182,13 @@ function updateMindMap() {
 }
 function deleteMindMap() {
 	let name = document.getElementById("mindmap-name").value;
-	let config = {
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Cache-Control': 'no-store'
-		}
-	}
 	let data = {
-		action: "delete",
-		name: name		
+		action: MINDMAP_ACTION.DELETE_MINDMAP,
+		MINDMAP_NAME: name		
 	}
-	let url = '/Management/mindmap/';
 	if (name) {
 		if(confirm("You want to delete " + name + "?"))
-			axios.post(url, data, config)
+			axios.post(MINDMAP_URL, data, {REQUEST_HEADERS})
 			  .then(function (response) {
 			    alert(response.data);
 			  })
@@ -204,18 +210,17 @@ function clearMindMapForm() {
 }
 
 function getAllMindNode(mindMapName) {
-	let url = '/Management/mindnode/?action=get-all&name=' + mindMapName;
-	let config = {
-		headers: {
-			'Cache-Control': 'no-store'
-		}
-	}
-	axios.get(url, config)
+	let url = MINDNODE_URL 
+				+ '?action=' + MINDMAP_ACTION.GET_ALL_MINDNODE
+				+ '&MINDMAP_NAME=' + mindMapName;
+	axios.get(url, {REQUEST_HEADERS})
   	.then(function (response) {
 	    let mindNodeEl = "";
-	    listMindNode = response.data;
-	    for (let i = 0; i < listMindNode.length; i++) {
-	    	mindNodeEl += "<li class='list-group-item' onclick=\"getMindNode('" + listMindNode[i].name + "')\">" + listMindNode[i].name + "</li>";
+	    currentObj.mindNodeObjs = response.data;
+	    for (let i = 0; i < currentObj.mindNodeObjs.length; i++) {
+	    	mindNodeEl += "<li class='list-group-item' onclick=\"getMindNode('" + currentObj.mindNodeObjs[i].name + "')\">" 
+								+ currentObj.mindNodeObjs[i].name 
+						+ "</li>";
 	    }
 	    document.getElementById("list-mind-node").innerHTML = mindNodeEl;
 	 })	
@@ -227,27 +232,20 @@ function addNewMindNode() {
 	let y1 = document.getElementById("y1").value;
 	let y2 = document.getElementById("y2").value;
 	let note = document.getElementById("node-note").value;
-	let config = {
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Cache-Control': 'no-store'
-		}
-	}
 	let data = {
-		action: "add",
-		name: name,
-		coordinate: JSON.stringify({
+		action: MINDMAP_ACTION.ADD_MINDNODE,
+		MINDNODE_NAME: name,
+		MINDNODE_COORDINATE: JSON.stringify({
 			x1: x1,
 			y1: y1,
 			x2: x2,
 			y2: y2
 		}),
-		note: note,
-		mindmap: mindMapNameGlobal		
+		MINDNODE_NOTE: note,
+		MINDMAP_NAME: currentObj.mindMapName		
 	}
-	let url = '/Management/mindnode/';
-	if (name && x1 && x2 && y1 && y2 && note && mindMapNameGlobal) {	
-		axios.post(url, data, config)
+	if (name && x1 && x2 && y1 && y2 && note && currentObj.mindMapName) {	
+		axios.post(MINDNODE_URL, data, {REQUEST_HEADERS})
 		.then(function (response) {
 			alert(response.data);
 		})
@@ -259,13 +257,11 @@ function addNewMindNode() {
 	 	alert("Empty!");
 }
 function getMindNode(nodeName) {
-	let url = '/Management/mindnode/?action=get-node&nodename=' + nodeName + '&mindmap=' + mindMapNameGlobal;
-	let config = {
-		headers: {
-			'Cache-Control': 'no-store'
-		}
-	}
-	axios.get(url, config)
+	let url = MINDNODE_URL 
+				+ '?action=' + MINDMAP_ACTION.GET_MINDNODE
+				+ '&MINDNODE_NAME=' + nodeName 
+				+ '&MINDMAP_NAME=' + currentObj.mindMapName;
+	axios.get(url, {REQUEST_HEADERS})
   	.then(function (response) {
   		console.log(response);
 	    let nodeInfo = response.data;
@@ -276,15 +272,17 @@ function getMindNode(nodeName) {
 		document.getElementById("y1").value = nodeCoordinate.y1;
 		document.getElementById("y2").value = nodeCoordinate.y2;
 		document.getElementById("node-note").value = nodeInfo.note;
-		currentNode = response.data;
+		currentObj.mindNodeObj = response.data;
 		document.getElementById("mindnode-save-btn").disabled = true;
 		document.getElementById("mindnode-update-btn").disabled = false;
 		document.getElementById("mindnode-delete-btn").disabled = false;
 		let delta = response.data.article;
+		if (delta) {
 		let tempQuill = new Quill(document.createElement("div"));
 		tempQuill.setContents(JSON.parse(delta));
     	document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML;
     	quill.setContents(delta);
+    	}
 	 })	
 }
 function updateMindNode() {
@@ -294,28 +292,21 @@ function updateMindNode() {
 	let y1 = document.getElementById("y1").value;
 	let y2 = document.getElementById("y2").value;
 	let note = document.getElementById("node-note").value;
-	let config = {
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Cache-Control': 'no-store'
-		}
-	}
 	let data = {
-		action: "update",
-		oldname: currentNode.name,
-		newname: newName,
-		coordinate: JSON.stringify({
+		action: MINDMAP_ACTION.UPDATE_MINDNODE,
+		MINDNODE_NAME: currentObj.mindNodeObj.name,
+		MINDNODE_NEW_NAME: newName,
+		MINDNODE_COORDINATE: JSON.stringify({
 			x1: x1,
 			y1: y1,
 			x2: x2,
 			y2: y2
 		}),
-		note: note,
-		mindmap: mindMapNameGlobal			
-	}
-	let url = '/Management/mindnode/';
-	if (newName && x1 && x2 && y1 && y2 && note && mindMapNameGlobal) {	
-		axios.post(url, data, config)
+		MINDNODE_NODE: note,
+		MINDMAP_NAME: currentObj.mindMapName			
+	};
+	if (newName && x1 && x2 && y1 && y2 && note && currentObj.mindMapName) {	
+		axios.post(MINDNODE_URL, data, {REQUEST_HEADERS})
 		.then(function (response) {
 			alert(response.data);
 		})
@@ -328,21 +319,14 @@ function updateMindNode() {
 }
 function deleteMindNode() {
 	let name = document.getElementById("mind-node-name").value;
-	let config = {
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Cache-Control': 'no-store'
-		}
-	}
 	let data = {
-		action: "delete",
-		nodename: name,
-		mindmapname: currentMindMap.name		
+		action: MINDMAP_ACTION.DELETE_MINDNODE,
+		MINDNODE_NAME: name,
+		MINDMAP_NAME: currentObj.mindMapObj.name		
 	}
-	let url = '/Management/mindnode/';
 	if (name) {
 		if(confirm("You want to delete " + name + "?"))
-			axios.post(url, data, config)
+			axios.post(MINDNODE_URL, data, {REQUEST_HEADERS})
 			  .then(function (response) {
 			    alert(response.data);
 			  })
@@ -371,22 +355,14 @@ function showPost() {
     document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML;
 }
 function saveNodeArticle() {
-	console.log("current node: ",currentNode);
 	let delta = quill.getContents();
-	let config = {
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Cache-Control': 'no-store'
-		}
-	}
 	let data = {
-		action: "update-article",
-		nodeid: currentNode.id,
-		article: JSON.stringify(delta)	
+		action: MINDMAP_ACTION.UPDATE_MINDNODE_ARTICLE,
+		MINDNODE_ID: currentObj.mindNodeObj.id,
+		MINDNODE_ARTICLE: JSON.stringify(delta)	
 	}
-	let url = '/Management/mindnode/';
-			axios.post(url, data, config)
-			  .then(function (response) {
+	axios.post(MINDNODE_URL, data, {REQUEST_HEADERS})
+			.then(function (response) {
 			    alert(response.data);
 			  })
 			  .catch(function (error) {

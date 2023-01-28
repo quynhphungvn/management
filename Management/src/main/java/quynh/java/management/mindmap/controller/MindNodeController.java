@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import quynh.java.management.constants.MindMapRequestAction;
+import quynh.java.management.constants.MindMapRequestParam;
 import quynh.java.management.mindmap.dao.MindMapDao;
 import quynh.java.management.mindmap.dao.MindNodeDao;
 import quynh.java.management.mindmap.models.MindMap;
@@ -20,7 +22,7 @@ import quynh.java.management.mindmap.models.MindNode;
  * Servlet implementation class MindMapNodeController
  */
 @WebServlet("/mindnode/")
-public class MindMapNodeController extends HttpServlet {
+public class MindNodeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private MindNodeDao mindNodeDao = new MindNodeDao();  
     private MindMapDao mindMapDao = new MindMapDao();
@@ -28,7 +30,7 @@ public class MindMapNodeController extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MindMapNodeController() {
+    public MindNodeController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,8 +43,8 @@ public class MindMapNodeController extends HttpServlet {
 	}
 	private void processGetRequest(HttpServletRequest request, HttpServletResponse response) {
 		String action = request.getParameter("action");
-		if (action.equals("get-all")) {
-			String mindMapName = request.getParameter("name");
+		if (action.equals(MindMapRequestAction.GET_ALL_MINDNODE)) {
+			String mindMapName = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
 			int mindMapId = mindMapDao.getMindMapByName(mindMapName).getId();
 			List<MindNode> mindNodes = mindNodeDao.getAllMindNode(mindMapId);
 			try {
@@ -51,9 +53,9 @@ public class MindMapNodeController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}  else if (action.equals("get-node")) {
-			String mindMapName = request.getParameter("mindmap");
-			String mindNodeName = request.getParameter("nodename");
+		}  else if (action.equals(MindMapRequestAction.GET_MINDNODE)) {
+			String mindMapName = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
+			String mindNodeName = request.getParameter(MindMapRequestParam.MINDNODE_NAME);
 			MindMap mindmap = mindMapDao.getMindMapByName(mindMapName);
 			MindNode mindNode = mindNodeDao.getMindMapNodeByName(mindNodeName, mindmap.getId());
 			try {
@@ -62,8 +64,8 @@ public class MindMapNodeController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if (action.equals("get-article")) {
-			int nodeId = Integer.parseInt(request.getParameter("nodeid"));
+		} else if (action.equals(MindMapRequestAction.GET_MINDNODE_ARTICLE)) {
+			int nodeId = Integer.parseInt(request.getParameter(MindMapRequestParam.MINDNODE_ID));
 			String article = mindNodeDao.getMindNodeArticle(nodeId);
 			try {
 				response.getOutputStream().print(gson.toJson(article));
@@ -83,11 +85,11 @@ public class MindMapNodeController extends HttpServlet {
 	}
 	private void processPostRequest(HttpServletRequest request, HttpServletResponse response) {
 		String action = request.getParameter("action");
-		if (action.equals("add")) {
-			String name = request.getParameter("name");
-			String coordinate = request.getParameter("coordinate");
-			String note = request.getParameter("note");
-			String mindMapName = request.getParameter("mindmap");
+		if (action.equals(MindMapRequestAction.ADD_MINDNODE)) {
+			String name = request.getParameter(MindMapRequestParam.MINDNODE_NAME);
+			String coordinate = request.getParameter(MindMapRequestParam.MINDNODE_COORDINATE);
+			String note = request.getParameter(MindMapRequestParam.MINDNODE_NOTE);
+			String mindMapName = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
 			MindMap mm = mindMapDao.getMindMapByName(mindMapName);
 			MindNode mindNode = new MindNode();
 			mindNode.setName(name);
@@ -111,12 +113,12 @@ public class MindMapNodeController extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
-		} else if (action.equals("update")) {
-			String oldName = request.getParameter("oldname");
-			String coordinate = request.getParameter("coordinate");
-			String note = request.getParameter("note");
-			String mindMapName = request.getParameter("mindmap");
-			String newName = request.getParameter("newname");
+		} else if (action.equals(MindMapRequestAction.UPDATE_MINDNODE)) {
+			String oldName = request.getParameter(MindMapRequestParam.MINDNODE_NAME);
+			String coordinate = request.getParameter(MindMapRequestParam.MINDNODE_COORDINATE);
+			String note = request.getParameter(MindMapRequestParam.MINDNODE_NOTE);
+			String mindMapName = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
+			String newName = request.getParameter(MindMapRequestParam.MINDNODE_NEW_NAME);
 			MindMap mm = mindMapDao.getMindMapByName(mindMapName);
 			MindNode mindNode = new MindNode();
 			mindNode.setName(newName);
@@ -139,9 +141,9 @@ public class MindMapNodeController extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
-		} else if (action.equals("delete")) {
-			String nodeName = request.getParameter("nodename");
-			String mindMapName = request.getParameter("mindmapname");
+		} else if (action.equals(MindMapRequestAction.DELETE_MINDNODE)) {
+			String nodeName = request.getParameter(MindMapRequestParam.MINDNODE_NAME);
+			String mindMapName = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
 			MindMap mm = mindMapDao.getMindMapByName(mindMapName);
 			int result = mindNodeDao.deleteNode(nodeName, mm.getId());
 			if (result == 1)
@@ -159,9 +161,9 @@ public class MindMapNodeController extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
-		} else if (action.equals("update-article")) {
-			int nodeId = Integer.parseInt(request.getParameter("nodeid"));
-			String article = request.getParameter("article");
+		} else if (action.equals(MindMapRequestAction.UPDATE_MINDNODE_ARTICLE)) {
+			int nodeId = Integer.parseInt(request.getParameter(MindMapRequestParam.MINDNODE_ID));
+			String article = request.getParameter(MindMapRequestParam.MINDNODE_ARTICLE);
 			int result = mindNodeDao.updateArticle(nodeId, article);
 			if (result == 1)
 				try {

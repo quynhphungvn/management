@@ -12,9 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import quynh.java.management.mindmap.MindMapCreator;
+import quynh.java.management.constants.DiagramImgName;
+import quynh.java.management.constants.FolderPath;
+import quynh.java.management.constants.MindMapRequestAction;
+import quynh.java.management.constants.MindMapRequestParam;
 import quynh.java.management.mindmap.dao.MindMapDao;
 import quynh.java.management.mindmap.models.MindMap;
+import quynh.java.management.utils.files.DiagramImageCreator;
 
 /**
  * Servlet implementation class MindMapController
@@ -23,7 +27,7 @@ import quynh.java.management.mindmap.models.MindMap;
 public class MindMapController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private MindMapDao mindMapDao = new MindMapDao();   
-    private MindMapCreator mindMapCreator = new MindMapCreator();
+    private DiagramImageCreator imageCreator = new DiagramImageCreator();
     private Gson gson = new Gson();
     /**
      * @see HttpServlet#HttpServlet()
@@ -40,46 +44,50 @@ public class MindMapController extends HttpServlet {
 		processGetRequest(request, response);
 	}
 	private void processGetRequest(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println(request.getServerName());
-		System.out.println(request.getServletContext().getContextPath());
 		String action = request.getParameter("action");
 		if (action == null) {
-			List<String> listMindMapName = mindMapDao.getAllMindMapName();
-			request.setAttribute("list-mindmap-name", listMindMapName);
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/mindmap.jsp");
+			returnMindMapHomePage(request, response);
+		}
+		else if (action.equals(MindMapRequestAction.GET_MINDMAP)) {
+			returnMindMapByName(request, response);
+		}
+		
+	}
+	private void returnMindMapHomePage(HttpServletRequest request, HttpServletResponse response) {
+		List<String> listMindMapName = mindMapDao.getAllMindMapName();
+		request.setAttribute("list-mindmap-name", listMindMapName);
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/mindmap.jsp");
+		try {
+			rd.forward(request, response);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private void returnMindMapByName(HttpServletRequest request, HttpServletResponse response) {
+		String mindMapName = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
+		MindMap mm = mindMapDao.getMindMapByName(mindMapName);
+		String pathFile = request.getServletContext().getRealPath("") + FolderPath.MINDMAP_FOLDER_IMG;
+		boolean createResult = imageCreator.createDiagramPNG(mm.getTextContent(), pathFile, DiagramImgName.MINDMAP_IMAGE_NAME);
+		if (createResult)
 			try {
-				rd.forward(request, response);
-			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				response.setStatus(200);
+				response.getOutputStream().print(gson.toJson(mm));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		else if (action.equals("get-mindmap")) {
-			String name = request.getParameter("name");
-			MindMap mm = mindMapDao.getMindMapByName(name);
-			String pathFile = request.getServletContext().getRealPath("");
-			boolean createResult = mindMapCreator.createPNG(mm.getTextContent(), pathFile);
-			if (createResult)
-				try {
-					response.getOutputStream().print(gson.toJson(mm));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			else
-				try {
-					response.getOutputStream().print("FAIL");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
-		
-	}
-
+		else
+			try {
+				response.getOutputStream().print("FAIL");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	} 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -88,91 +96,102 @@ public class MindMapController extends HttpServlet {
 	}
 	private void processPostRequest(HttpServletRequest request, HttpServletResponse response) {
 		String action = request.getParameter("action");
-		if (action.equals("add")) {
-			String mindMapName = request.getParameter("name");
-			String mindMapTextContent = request.getParameter("text");
-			MindMap mm = new MindMap();
-			mm.setName(mindMapName);
-			mm.setTextContent(mindMapTextContent);
-			int numberRowAdded = mindMapDao.addNewMindMap(mm);
-			if (numberRowAdded == 1) {
-				try {
-					response.getOutputStream().print("OK");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		if (action.equals(MindMapRequestAction.ADD_MINDMAP)) {
+			addMindMap(request, response);
+		} else if (action.equals(MindMapRequestAction.TEST_MINDMAP)) {
+			createMindMapPNGForTest(request, response);
+		} else if (action.equals(MindMapRequestAction.DELETE_MINDMAP)) {
+			deleteMindMap(request, response);
+		} else if (action.equals(MindMapRequestAction.UPDATE_MINDMAP)) {
+			updateMindMap(request, response);
+		}
+	}
+	private void addMindMap(HttpServletRequest request, HttpServletResponse response) {
+		String mindMapName = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
+		String mindMapTextContent = request.getParameter(MindMapRequestParam.MINDMAP_TEXT_DIA);
+		MindMap mm = new MindMap();
+		mm.setName(mindMapName);
+		mm.setTextContent(mindMapTextContent);
+		int numberRowAdded = mindMapDao.addNewMindMap(mm);
+		if (numberRowAdded == 1) {
+			try {
+				response.setStatus(201);
+				response.getOutputStream().print("OK");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else 
-				try {
-					response.getOutputStream().print("FAIL");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		} else if (action.equals("check")) {
-			String mindMapText = request.getParameter("text");
-			if (mindMapText != null) {
-				String pathFile = request.getServletContext().getRealPath("");
-				boolean createResult = mindMapCreator.createPNG(mindMapText, pathFile);
-				if (!createResult)
-					try {
-						response.getOutputStream().print("FAIL");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				else
-					try {
-						response.getOutputStream().print("OK");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+		}
+		else 
+			try {
+				response.getOutputStream().print("FAIL");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} else if (action.equals("delete")) {
-			String name = request.getParameter("name");
-			if (name != null) {
-				int result = mindMapDao.deleteMindMapByName(name);
-				if (result == 0)
-					try {
-						response.getOutputStream().print("FAIL");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				else
-					try {
-						response.getOutputStream().print("OK");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			}
-		} else if (action.equals("update")) {
-			String mindMapName = request.getParameter("name");
-			String mindMapNewName = request.getParameter("newname");
-			String mindMapTextContent = request.getParameter("text");
-			MindMap mm = new MindMap();
-			mm.setName(mindMapNewName);
-			mm.setTextContent(mindMapTextContent);
-			int numberRowAdded = mindMapDao.updateMindMap(mm, mindMapName);
-			if (numberRowAdded == 1) {
-				try {
-					response.getOutputStream().print("OK");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else 
+	}
+	private void createMindMapPNGForTest(HttpServletRequest request, HttpServletResponse response) {
+		String mindMapText = request.getParameter(MindMapRequestParam.MINDMAP_TEXT_DIA);
+		if (mindMapText != null) {
+			String pathFile = request.getServletContext().getRealPath("") + FolderPath.MINDMAP_FOLDER_IMG;
+			boolean createResult = imageCreator.createDiagramPNG(mindMapText, pathFile, DiagramImgName.MINDMAP_IMAGE_NAME);
+			if (!createResult)
 				try {
 					response.getOutputStream().print("FAIL");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			else
+				try {
+					response.getOutputStream().print("OK");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}
 	}
-
+	private void deleteMindMap(HttpServletRequest request, HttpServletResponse response) {
+		String name = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
+		if (name != null) {
+			int result = mindMapDao.deleteMindMapByName(name);
+			if (result == 0)
+				try {
+					response.getOutputStream().print("FAIL");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			else
+				try {
+					response.getOutputStream().print("OK");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
+	private void updateMindMap(HttpServletRequest request, HttpServletResponse response) {
+		String mindMapName = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
+		String mindMapNewName = request.getParameter(MindMapRequestParam.MINDMAP_NEW_NAME);
+		String mindMapTextDia = request.getParameter(MindMapRequestParam.MINDMAP_TEXT_DIA);
+		MindMap tempMindMap = new MindMap();
+		tempMindMap.setName(mindMapNewName);
+		tempMindMap.setTextContent(mindMapTextDia);
+		int numberRowAdded = mindMapDao.updateMindMap(tempMindMap, mindMapName);
+		if (numberRowAdded == 1) {
+			try {
+				response.setStatus(200);
+				response.getOutputStream().print("OK");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else 
+			try {
+				response.getOutputStream().print("FAIL");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
 }

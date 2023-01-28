@@ -1,4 +1,4 @@
-package quynh.java.management.mindmap;
+package quynh.java.management.utils.samples;
 
 public class TextSample {
 

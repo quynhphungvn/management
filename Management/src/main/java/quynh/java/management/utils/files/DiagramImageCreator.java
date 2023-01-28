@@ -1,4 +1,4 @@
-package quynh.java.management.mindmap;
+package quynh.java.management.utils.files;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import net.sourceforge.plantuml.SourceStringReader;
-public class MindMapCreator {
-	public boolean createPNG(String inputText, String path) {
+
+public class DiagramImageCreator {
+	public boolean createDiagramPNG(String diagramText, String path, String fileName) {
 		boolean result = true;
-		File file = new File(path + "/resource/temp/temp.png");
+		File file = new File(path + fileName);
 		if (!file.exists())
 			try {
 				file.createNewFile();
@@ -24,7 +25,7 @@ public class MindMapCreator {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		String source = inputText;
+		String source = diagramText;
 		SourceStringReader reader = new SourceStringReader(source);
 		try {
 			String desc = reader.outputImage(png).getDescription();
