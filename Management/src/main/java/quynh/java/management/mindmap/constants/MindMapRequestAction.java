@@ -1,4 +1,4 @@
-package quynh.java.management.constants;
+package quynh.java.management.mindmap.constants;
 
 public class MindMapRequestAction {
 	public static final String GET_MINDMAP = "GET_MINDMAP";

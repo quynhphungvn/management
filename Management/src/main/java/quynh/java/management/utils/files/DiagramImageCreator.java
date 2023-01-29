@@ -9,9 +9,9 @@ import java.io.OutputStream;
 import net.sourceforge.plantuml.SourceStringReader;
 
 public class DiagramImageCreator {
-	public boolean createDiagramPNG(String diagramText, String path, String fileName) {
+	public boolean createDiagramPNG(String diagramText, String fullPath) {
 		boolean result = true;
-		File file = new File(path + fileName);
+		File file = new File(fullPath);
 		if (!file.exists())
 			try {
 				file.createNewFile();

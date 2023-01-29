@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import quynh.java.management.constants.DiagramImgName;
-import quynh.java.management.constants.FolderPath;
-import quynh.java.management.constants.MindMapRequestAction;
-import quynh.java.management.constants.MindMapRequestParam;
+import quynh.java.management.mindmap.constants.MindMapDiagramImgName;
+import quynh.java.management.mindmap.constants.MindMapFolderPath;
+import quynh.java.management.mindmap.constants.MindMapRequestAction;
+import quynh.java.management.mindmap.constants.MindMapRequestParam;
 import quynh.java.management.mindmap.dao.MindMapDao;
 import quynh.java.management.mindmap.models.MindMap;
 import quynh.java.management.utils.files.DiagramImageCreator;
@@ -56,7 +56,7 @@ public class MindMapController extends HttpServlet {
 	private void returnMindMapHomePage(HttpServletRequest request, HttpServletResponse response) {
 		List<String> listMindMapName = mindMapDao.getAllMindMapName();
 		request.setAttribute("list-mindmap-name", listMindMapName);
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/mindmap.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/mindmap/mindmap.jsp");
 		try {
 			rd.forward(request, response);
 		} catch (ServletException e) {
@@ -70,8 +70,10 @@ public class MindMapController extends HttpServlet {
 	private void returnMindMapByName(HttpServletRequest request, HttpServletResponse response) {
 		String mindMapName = request.getParameter(MindMapRequestParam.MINDMAP_NAME);
 		MindMap mm = mindMapDao.getMindMapByName(mindMapName);
-		String pathFile = request.getServletContext().getRealPath("") + FolderPath.MINDMAP_FOLDER_IMG;
-		boolean createResult = imageCreator.createDiagramPNG(mm.getTextContent(), pathFile, DiagramImgName.MINDMAP_IMAGE_NAME);
+		String pathFile = request.getServletContext().getRealPath("") 
+								+ MindMapFolderPath.MINDMAP_FOLDER_IMG 
+								+ MindMapDiagramImgName.MINDMAP_IMAGE_NAME;
+		boolean createResult = imageCreator.createDiagramPNG(mm.getTextContent(), pathFile);
 		if (createResult)
 			try {
 				response.setStatus(200);
@@ -133,8 +135,10 @@ public class MindMapController extends HttpServlet {
 	private void createMindMapPNGForTest(HttpServletRequest request, HttpServletResponse response) {
 		String mindMapText = request.getParameter(MindMapRequestParam.MINDMAP_TEXT_DIA);
 		if (mindMapText != null) {
-			String pathFile = request.getServletContext().getRealPath("") + FolderPath.MINDMAP_FOLDER_IMG;
-			boolean createResult = imageCreator.createDiagramPNG(mindMapText, pathFile, DiagramImgName.MINDMAP_IMAGE_NAME);
+			String pathFile = request.getServletContext().getRealPath("") 
+					+ MindMapFolderPath.MINDMAP_FOLDER_IMG 
+					+ MindMapDiagramImgName.MINDMAP_IMAGE_NAME;
+			boolean createResult = imageCreator.createDiagramPNG(mindMapText, pathFile);
 			if (!createResult)
 				try {
 					response.getOutputStream().print("FAIL");

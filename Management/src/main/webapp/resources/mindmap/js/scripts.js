@@ -18,10 +18,12 @@ let MINDMAP_PARAM = {
 }
 let MINDMAP_URL = "/Management/mindmap/";
 let MINDNODE_URL = "/Management/mindnode/";
-let REQUEST_HEADERS = {
+
+let configs = {
+	headers: {
 	'Content-Type': 'application/x-www-form-urlencoded',
 	'Cache-Control': 'no-store'
-	
+	}
 }
 let currentObj = {
 	mindMapName: "",
@@ -96,8 +98,8 @@ function testMindMap() {
 		action: MINDMAP_ACTION.TEST_MINDMAP,
 		MINDMAP_TEXT_DIA: areaText.value
 	}
-	if (data.text)
-		axios.post(MINDMAP_URL, data, {REQUEST_HEADERS})
+	if (data.MINDMAP_TEXT_DIA)
+		axios.post(MINDMAP_URL, data, configs)
 	  	.then(function (response) {
 		    if (response.data == 'OK')
 		    	document.getElementById("mindmap-image-el").src = "/Management/resources/mindmap/images/mindmap.png?" + timeNow;
@@ -120,7 +122,7 @@ function addMindMap() {
 		MINDMAP_TEXT_DIA: areaText.value
 	}
 	if (name && areaText)
-		axios.post(MINDMAP_URL, data, {REQUEST_HEADERS})
+		axios.post(MINDMAP_URL, data, configs)
 	  .then(function (response) {
 	    alert(response.data);
 	  })
@@ -170,7 +172,7 @@ function updateMindMap() {
 		MINDMAP_TEXT_DIA: areaText.value
 	}
 	if (name && areaText)
-		axios.post(MINDMAP_URL, data, {REQUEST_HEADERS})
+		axios.post(MINDMAP_URL, data, configs)
 	  .then(function (response) {
 	    alert(response.data);
 	  })
@@ -188,7 +190,7 @@ function deleteMindMap() {
 	}
 	if (name) {
 		if(confirm("You want to delete " + name + "?"))
-			axios.post(MINDMAP_URL, data, {REQUEST_HEADERS})
+			axios.post(MINDMAP_URL, data, configs)
 			  .then(function (response) {
 			    alert(response.data);
 			  })
@@ -213,7 +215,7 @@ function getAllMindNode(mindMapName) {
 	let url = MINDNODE_URL 
 				+ '?action=' + MINDMAP_ACTION.GET_ALL_MINDNODE
 				+ '&MINDMAP_NAME=' + mindMapName;
-	axios.get(url, {REQUEST_HEADERS})
+	axios.get(url, configs)
   	.then(function (response) {
 	    let mindNodeEl = "";
 	    currentObj.mindNodeObjs = response.data;
@@ -245,7 +247,7 @@ function addNewMindNode() {
 		MINDMAP_NAME: currentObj.mindMapName		
 	}
 	if (name && x1 && x2 && y1 && y2 && note && currentObj.mindMapName) {	
-		axios.post(MINDNODE_URL, data, {REQUEST_HEADERS})
+		axios.post(MINDNODE_URL, data, configs)
 		.then(function (response) {
 			alert(response.data);
 		})
@@ -261,7 +263,7 @@ function getMindNode(nodeName) {
 				+ '?action=' + MINDMAP_ACTION.GET_MINDNODE
 				+ '&MINDNODE_NAME=' + nodeName 
 				+ '&MINDMAP_NAME=' + currentObj.mindMapName;
-	axios.get(url, {REQUEST_HEADERS})
+	axios.get(url, configs)
   	.then(function (response) {
   		console.log(response);
 	    let nodeInfo = response.data;
@@ -306,7 +308,7 @@ function updateMindNode() {
 		MINDMAP_NAME: currentObj.mindMapName			
 	};
 	if (newName && x1 && x2 && y1 && y2 && note && currentObj.mindMapName) {	
-		axios.post(MINDNODE_URL, data, {REQUEST_HEADERS})
+		axios.post(MINDNODE_URL, data, configs)
 		.then(function (response) {
 			alert(response.data);
 		})
@@ -326,7 +328,7 @@ function deleteMindNode() {
 	}
 	if (name) {
 		if(confirm("You want to delete " + name + "?"))
-			axios.post(MINDNODE_URL, data, {REQUEST_HEADERS})
+			axios.post(MINDNODE_URL, data, configs)
 			  .then(function (response) {
 			    alert(response.data);
 			  })
@@ -361,7 +363,7 @@ function saveNodeArticle() {
 		MINDNODE_ID: currentObj.mindNodeObj.id,
 		MINDNODE_ARTICLE: JSON.stringify(delta)	
 	}
-	axios.post(MINDNODE_URL, data, {REQUEST_HEADERS})
+	axios.post(MINDNODE_URL, data, configs)
 			.then(function (response) {
 			    alert(response.data);
 			  })

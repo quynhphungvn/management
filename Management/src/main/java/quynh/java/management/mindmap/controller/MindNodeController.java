@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import quynh.java.management.constants.MindMapRequestAction;
-import quynh.java.management.constants.MindMapRequestParam;
+import quynh.java.management.mindmap.constants.MindMapRequestAction;
+import quynh.java.management.mindmap.constants.MindMapRequestParam;
 import quynh.java.management.mindmap.dao.MindMapDao;
 import quynh.java.management.mindmap.dao.MindNodeDao;
 import quynh.java.management.mindmap.models.MindMap;

@@ -19,9 +19,9 @@ public class MindMapCreateTable {
 			String sqlMindNode = "create table if not exists mindnode("
 					+ "id int not null auto_increment,"	
 					+ "name varchar(100) not null unique,"
-					+ "coordinate json not null,"
+					+ "coordinate varchar(100) not null,"
 					+ "note text,"
-					+ "article JSON,"
+					+ "article text,"
 					+ "mindmap_id int not null,"
 					+ "primary key (id))";
 			this.createTable(sqlMindNode, conn);

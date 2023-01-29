@@ -1,4 +1,4 @@
-package quynh.java.management.constants;
+package quynh.java.management.mindmap.constants;
 
 public class MindMapRequestParam {
 	public static final String MINDMAP_ID = "MINDMAP_ID";

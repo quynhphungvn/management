@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #main {
 	width: 100vw;
 	height: 100vh;
@@ -5,9 +6,12 @@
 #leftbar {
 	flex-basis: 100px;
 }
-#mindmap {
+#project {
 	flex-grow: 1;
 }
-#mindmap-tab {
+#project-control {
 	flex-basis: 400px;
+}
+#project-content {
+	flex-grow: 1;
 }
