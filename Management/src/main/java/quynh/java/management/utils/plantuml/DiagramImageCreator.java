@@ -1,4 +1,4 @@
-package quynh.java.management.utils.files;
+package quynh.java.management.utils.plantuml;
 
 import java.io.File;
 import java.io.FileNotFoundException;

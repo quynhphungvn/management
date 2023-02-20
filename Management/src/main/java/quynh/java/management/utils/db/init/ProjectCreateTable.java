@@ -1,30 +1,40 @@
-package quynh.java.management.utils.db;
+package quynh.java.management.utils.db.init;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class MindMapCreateTable {
+import quynh.java.management.utils.db.DBConnection;
+
+public class ProjectCreateTable {
 	public void createAllTable() {
 		Connection conn = null;
 		try {
 			conn = DBConnection.getMySQLConnection();
-			String sqlMindMap = "create table if not exists mindmap("
+			String sqlProject = "create table if not exists project ("
 					+ " id int not null auto_increment,"
 					+ "	name varchar(100) not null unique,"
-					+ " text_content text,"
+					+ " class_dia_text text,"
+					+ " erd_dia_text text,"
 					+ " primary key (id))";
-			this.createTable(sqlMindMap, conn);
+			this.createTable(sqlProject, conn);
 			
-			String sqlMindNode = "create table if not exists mindnode("
+			String sqlUsecase = "create table if not exists project_usecase ("
+					+ " id int not null auto_increment,"
+					+ " project_wireframe_id int not null,"
+					+ " activity_dia_text text,"
+					+ " sequence_dia_text text,"
+					+ " primary key (id))";
+			this.createTable(sqlUsecase, conn);
+						
+			String sqlWireframe = "create table if not exists project_wireframe("
 					+ "id int not null auto_increment,"	
 					+ "name varchar(100) not null unique,"
-					+ "coordinate varchar(100) not null,"
-					+ "note text,"
-					+ "article text,"
-					+ "mindmap_id int not null,"
+					+ "wireframe_dia_text text,"
+					+ "usecase_dia_text text,"
+					+ "project_id int not null,"
 					+ "primary key (id))";
-			this.createTable(sqlMindNode, conn);
+			this.createTable(sqlWireframe, conn);					
 						
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -45,8 +55,8 @@ public class MindMapCreateTable {
 	}
 	public static void main(String[] args) {
 		System.out.println("Creating table!");
-		MindMapCreateTable ct = new MindMapCreateTable();
+		ProjectCreateTable ct = new ProjectCreateTable();
 		ct.createAllTable();
-		System.out.println("Creating table end!");
+		System.out.println("Done!");
 	}
 }

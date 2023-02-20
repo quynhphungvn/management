@@ -12,13 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import quynh.java.management.mindmap.constants.MindMapDiagramImgName;
-import quynh.java.management.mindmap.constants.MindMapFolderPath;
-import quynh.java.management.mindmap.constants.MindMapRequestAction;
-import quynh.java.management.mindmap.constants.MindMapRequestParam;
-import quynh.java.management.mindmap.dao.MindMapDao;
-import quynh.java.management.mindmap.models.MindMap;
-import quynh.java.management.utils.files.DiagramImageCreator;
+import quynh.java.management.project.models.Project;
+import quynh.java.management.project.services.ProjectServices;
 
 /**
  * Servlet implementation class MindMapController
@@ -27,6 +22,7 @@ import quynh.java.management.utils.files.DiagramImageCreator;
 public class ProjectController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Gson gson = new Gson();
+    private ProjectServices projectServices = new ProjectServices();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -45,10 +41,11 @@ public class ProjectController extends HttpServlet {
 		String action = request.getParameter("action");
 		if (action == null) {
 			returnProjectHomePage(request, response);
-		}
-		
+		} 	
 	}
 	private void returnProjectHomePage(HttpServletRequest request, HttpServletResponse response) {
+		List<Project> projects = projectServices.getAllProject();
+		request.setAttribute("projects", projects);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/project/project.jsp");
 		try {
 			rd.forward(request, response);
@@ -65,7 +62,14 @@ public class ProjectController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processPostRequest(request, response);
+		String action = request.getParameter("action");
+		if (action == null) {
+			System.out.println("action is null! and name:" + request.getParameter("projectName"));
+		}
+		else if (action.equals("ADD")) {
+			String projectName = request.getParameter("projectName");
+			projectServices.addNewProject(projectName);
+		}
 	}
 	private void processPostRequest(HttpServletRequest request, HttpServletResponse response) {}
 		

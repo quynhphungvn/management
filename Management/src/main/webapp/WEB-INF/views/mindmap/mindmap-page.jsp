@@ -39,7 +39,7 @@
 		integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
 		crossorigin="anonymous"></script>
 	<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-	<script src="/Management/resource/mindmap/js/image-resize.min.js"></script>
+	<script src="/Management/resources/mindmap/js/image-resize.min.js"></script>
 	<script><%@include file="/WEB-INF/views/mindmap/quill-process.js"%></script>
 	<script src="/Management/resources/mindmap/js/scripts.js"></script>
 

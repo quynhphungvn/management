@@ -7,12 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+
 import quynh.java.management.mindmap.models.MindMap;
 import quynh.java.management.utils.db.DBConnection;
+import quynh.java.management.utils.db.HibernateUtils;
 
 public class MindMapDao {
 	private Connection conn;
-	
+	private SessionFactory factory = HibernateUtils.getSessionFactory();
 	public MindMapDao() {
 		try {
 			conn = DBConnection.getMySQLConnection();
@@ -25,23 +30,26 @@ public class MindMapDao {
 		}
 	}
 	//init mindmap list from begining
-	public List<String> getAllMindMapName() {
-		List<String> listName = new ArrayList<String>();
-		String sql = "select name from mindmap;";
-		try {
-			PreparedStatement pstm = conn.prepareStatement(sql);
-			ResultSet rs = pstm.executeQuery();
-			while (rs.next()) {
-				listName.add(rs.getString(1));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return listName;
+	public List<MindMap> getAllMindMap() {
+		Session session = factory.openSession();
+		session.getTransaction().begin();
+		Query<MindMap> query = session.createQuery("FROM MindMap");
+		List<MindMap> mindMaps = query.list();
+		session.getTransaction().commit();
+		session.close();
+		return mindMaps;
 	}
 	
 	public int addNewMindMap(MindMap mindmap) {
+		Session session = factory.openSession();
+		session.getTransaction().begin();
+		Query<MindMap> query = session.createQuery("FROM MindMap WHERE name=" + mindmap.getName());
+		List<MindMap> mindMaps = query.list();
+		if (mindMaps.size() == 0)
+			session.save(mindmap);
+		session.getTransaction().commit();
+		session.close();
+		
 		int result = 0;
 		if (getMindMapByName(mindmap.getName()) == null) {
 			String sql = "insert into mindmap (name, text_content) values (?,?);";
@@ -100,10 +108,25 @@ public class MindMapDao {
 	}
 	public int deleteMindMapByName(String name) {
 		int result = 0;
+		deleteMindNodeByMindMapName(name);
 		String sql = "delete from mindmap where name=?;";
 		try {
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, name);
+			result = pstm.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	public int deleteMindNodeByMindMapName(String name) {
+		MindMap mindmap = getMindMapByName(name);
+		int result = 0;
+		String sql = "delete from mindnode where mindmap_id=?;";
+		try {
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, mindmap.getId());
 			result = pstm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -8,8 +8,8 @@ public class DBConnection {
 	public static Connection getMySQLConnection() throws SQLException, ClassNotFoundException {
 		String hostName = "localhost";
 		String dbName = "sm";
-		String userName = "quynhphung.vn";
-		String password = "mysql";
+		String userName = "qin";
+		String password = "mysql123";
 		return getMySQLConnection(hostName, dbName, userName, password);
 	}
 

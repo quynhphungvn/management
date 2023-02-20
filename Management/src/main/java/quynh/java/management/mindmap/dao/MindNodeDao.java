@@ -37,7 +37,7 @@ public class MindNodeDao {
 				mindNode.setName(rs.getString(2));
 				mindNode.setCoordinate(rs.getString(3));
 				mindNode.setNote(rs.getString(4));
-				mindNode.setMindMapId(rs.getInt(5));
+		///		mindNode.setMindMapId(rs.getInt(5));
 				listMindNode.add(mindNode);
 			}
 		} catch (SQLException e) {
@@ -46,46 +46,45 @@ public class MindNodeDao {
 		}
 		return listMindNode;
 	}
-	public String getMindNodeArticle(int mindNodeId) {
-		String result = null;
-		String sql = "select article from mindnode where id=?;";
-		try {
-			PreparedStatement pstm = conn.prepareStatement(sql);
-			pstm.setInt(1, mindNodeId);
-			ResultSet rs = pstm.executeQuery();
-			if (rs.next()) {
-				result = rs.getString(1);
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-	}
+//	public String getMindNodeArticle(int mindNodeId) {
+//		String result = null;
+//		String sql = "select article from mindnode where id=?;";
+//		try {
+//			PreparedStatement pstm = conn.prepareStatement(sql);
+//			pstm.setInt(1, mindNodeId);
+//			ResultSet rs = pstm.executeQuery();
+//			if (rs.next()) {
+//				result = rs.getString(1);
+//			}
+//			
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return result;
+//	}
 	public int addNewNode(MindNode mindNode) {
 		int result = 0;
-		if (getMindMapNodeByName(mindNode.getName(), mindNode.getMindMapId()) == null) {
-			String sql = "insert into mindnode (name, coordinate, note, article, mindmap_id) values (?,?,?,?,?);";
-			try {
-				PreparedStatement pstm = conn.prepareStatement(sql);
-				pstm.setString(1, mindNode.getName());
-				pstm.setString(2, mindNode.getCoordinate());
-				pstm.setString(3, mindNode.getNote());
-				pstm.setString(4, mindNode.getArticle());
-				pstm.setInt(5, mindNode.getMindMapId());
-				result = pstm.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		if (getMindMapNodeByName(mindNode.getName(), mindNode.getMindMapId()) == null) {
+//			String sql = "insert into mindnode (name, coordinate, note, mindmap_id) values (?,?,?,?);";
+//			try {
+//				PreparedStatement pstm = conn.prepareStatement(sql);
+//				pstm.setString(1, mindNode.getName());
+//				pstm.setString(2, mindNode.getCoordinate());
+//				pstm.setString(3, mindNode.getNote());
+//			//	pstm.setInt(4, mindNode.getMindMapId());
+//				result = pstm.executeUpdate();
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		return result;
 	}
 
 	public MindNode getMindMapNodeByName(String name, int mindMapId) {
 		MindNode mindNode = null;
-		String sql = "select id, name, coordinate, note, article, mindmap_id from mindnode where name=? and mindmap_id=?;";
+		String sql = "select id, name, coordinate, note, mindmap_id from mindnode where name=? and mindmap_id=?;";
 		try {
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, name);
@@ -97,8 +96,7 @@ public class MindNodeDao {
 				mindNode.setName(rs.getString(2));
 				mindNode.setCoordinate(rs.getString(3));
 				mindNode.setNote(rs.getString(4));
-				mindNode.setArticle(rs.getString(5));
-				mindNode.setMindMapId(rs.getInt(6));
+			//	mindNode.setMindMapId(rs.getInt(5));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -115,7 +113,7 @@ public class MindNodeDao {
 				pstm.setString(1, mindNode.getName());
 				pstm.setString(2, mindNode.getCoordinate());
 				pstm.setString(3, mindNode.getNote());
-				pstm.setInt(4, mindNode.getMindMapId());
+			//	pstm.setInt(4, mindNode.getMindMapId());
 				pstm.setString(5, oldNameNode);
 				pstm.setInt(6, mindMapId);
 				result = pstm.executeUpdate();
@@ -126,26 +124,22 @@ public class MindNodeDao {
 		}
 		return result;
 	}
-	public int updateArticle(int mindNodeId, String articleContent) {
-		int result = 0;
-		if (getMindMapNodeById(mindNodeId) != null) {
-			String sql = "update mindnode set article=? where id=?";
-			try {
-				PreparedStatement pstm = conn.prepareStatement(sql);
-				pstm.setString(1, articleContent);
-				pstm.setInt(2, mindNodeId);
-				result = pstm.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-	private MindNode getMindMapNodeById(int mindNodeId) {
-		// TODO Auto-generated method stub
-		return new MindNode();
-	}
+//	public int updateArticle(int mindNodeId, String articleContent) {
+//		int result = 0;
+//		if (getMindMapNodeById(mindNodeId) != null) {
+//			String sql = "update mindnode set article=? where id=?";
+//			try {
+//				PreparedStatement pstm = conn.prepareStatement(sql);
+//				pstm.setString(1, articleContent);
+//				pstm.setInt(2, mindNodeId);
+//				result = pstm.executeUpdate();
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		return result;
+//	}
 	public int deleteNode(String nodeName, int mindMapId) {
 		int result = 0;
 		if (getMindMapNodeByName(nodeName, mindMapId) != null) {

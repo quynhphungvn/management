@@ -1,4 +1,4 @@
-package quynh.java.management.mindmap.models;
+package quynh.java.management.project.models;
 
 import java.util.Set;
 
@@ -17,15 +17,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="mindmap")
-public class MindMap {
+@Table(name = "project")
+public class Project {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "name")
 	private String name;
-	@Column(name="text_content")
-	private String textContent;
-	@OneToMany(mappedBy = "mindmap")
-	private Set<MindNode> mindNodes;
+	@OneToMany(mappedBy = "project")
+	private Set<ProjectWireframe> projectWireframes;
+	@Column(name="class_dia_text")
+	private String classDiaText;
+	@Column(name="erd_dia_text")
+	private String erdDiaText;
 }

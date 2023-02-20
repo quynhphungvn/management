@@ -12,7 +12,9 @@
 	</div>
 	<div class="mb-3">
 		<label for="node-note" class="form-label">Note</label>
-		<textarea class="form-control" id="node-note" rows="10"></textarea>
+		<div id="editor">
+		
+		</div>
 	</div>
 	<div>
 		<button id="mindnode-clear-btn" class="btn btn-primary" onclick="clearMindNodeForm()">Clear</button>

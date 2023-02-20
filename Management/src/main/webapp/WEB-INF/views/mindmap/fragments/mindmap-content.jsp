@@ -14,15 +14,23 @@
 			<div class="tab-pane fade show active"
 				id="mindmap-tabcontent-mindmap" role="tabpanel">
 				<jsp:include
-					page="/WEB-INF/views/mindmap/fragments/mindmap-tab/components/tabcontent-mindmap.jsp" />
+					page="/WEB-INF/views/mindmap/fragments/mindmap-tab/tabcontent-mindmap.jsp" />
 			</div>
 			<div class="tab-pane fade" id="mindmap-tabcontent-mindnode"
 				role="tabpanel">
 				<jsp:include
-					page="/WEB-INF/views/mindmap/fragments/mindmap-tab/components/tabcontent-mindnode.jsp" />
+					page="/WEB-INF/views/mindmap/fragments/mindmap-tab/tabcontent-mindnode.jsp" />
 			</div>
-			<jsp:include
-					page="/WEB-INF/views/mindmap/fragments/mindmap-tab/components/mindmap-offcanvas/mindnode-content.jsp" />
+			<div class="offcanvas offcanvas-end" tabindex="-1" id="myOffcanvas">
+				<div class="offcanvas-header">
+					<h5 id="offcanvasRightLabel">Offcanvas right</h5>
+					<button type="button" class="btn-close text-reset"
+						data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div id="offcanvas-note"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div id="mindmap-image">

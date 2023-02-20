@@ -64,16 +64,6 @@ public class MindNodeController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if (action.equals(MindMapRequestAction.GET_MINDNODE_ARTICLE)) {
-			int nodeId = Integer.parseInt(request.getParameter(MindMapRequestParam.MINDNODE_ID));
-			String article = mindNodeDao.getMindNodeArticle(nodeId);
-			try {
-				response.getOutputStream().print(gson.toJson(article));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 		}  
 	}
 	/**
@@ -95,8 +85,7 @@ public class MindNodeController extends HttpServlet {
 			mindNode.setName(name);
 			mindNode.setCoordinate(coordinate);
 			mindNode.setNote(note);
-			mindNode.setArticle(null);
-			mindNode.setMindMapId(mm.getId());
+			//mindNode.setMindMapId(mm.getId());
 			int result = mindNodeDao.addNewNode(mindNode);
 			if (result == 1)
 				try {
@@ -124,7 +113,7 @@ public class MindNodeController extends HttpServlet {
 			mindNode.setName(newName);
 			mindNode.setCoordinate(coordinate);
 			mindNode.setNote(note);
-			mindNode.setMindMapId(mm.getId());
+			//mindNode.setMindMapId(mm.getId());
 			int result = mindNodeDao.updateNode(mindNode, oldName, mm.getId());
 			if (result == 1)
 				try {
@@ -161,26 +150,27 @@ public class MindNodeController extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
-		} else if (action.equals(MindMapRequestAction.UPDATE_MINDNODE_ARTICLE)) {
-			int nodeId = Integer.parseInt(request.getParameter(MindMapRequestParam.MINDNODE_ID));
-			String article = request.getParameter(MindMapRequestParam.MINDNODE_ARTICLE);
-			int result = mindNodeDao.updateArticle(nodeId, article);
-			if (result == 1)
-				try {
-					response.getOutputStream().print("OK");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			else {
-				try {
-					response.getOutputStream().print("FAIL");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 		}
+//		} else if (action.equals(MindMapRequestAction.UPDATE_MINDNODE_ARTICLE)) {
+//			int nodeId = Integer.parseInt(request.getParameter(MindMapRequestParam.MINDNODE_ID));
+//			String article = request.getParameter(MindMapRequestParam.MINDNODE_ARTICLE);
+//			int result = mindNodeDao.updateArticle(nodeId, article);
+//			if (result == 1)
+//				try {
+//					response.getOutputStream().print("OK");
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			else {
+//				try {
+//					response.getOutputStream().print("FAIL");
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 	}
 
 }

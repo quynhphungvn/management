@@ -60,15 +60,12 @@ function showNodeContent(event) {
 	  .then(function (response) {
 	  currentObj.mindNodeObj = response.data;
 	  	let offCanvasHeaderEl = document.getElementById("offcanvasRightLabel");
-	  	offCanvasHeaderEl.innerHTML = response.data.name;
-	  	let offCanvasNodeEl = document.getElementById("offcanvas-note");
-	  	offCanvasNodeEl.innerHTML = response.data.note;
-	    console.log("xxx", response.data);
-		if (response.data.article) {
-	    let delta = JSON.parse(response.data.article);
+	  	offCanvasHeaderEl.innerHTML = response.data.name.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+		if (response.data.note) {
+	    let delta = JSON.parse(response.data.note);
 		let tempQuill = new Quill(document.createElement("div"));
 		tempQuill.setContents(delta);
-    	document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML; 
+    	document.getElementById('offcanvas-note').innerHTML = tempQuill.root.innerHTML; 
 	    quill.setContents(delta);
 	    }
 	    bsOffcanvas.show();
@@ -217,11 +214,12 @@ function getAllMindNode(mindMapName) {
 				+ '&MINDMAP_NAME=' + mindMapName;
 	axios.get(url, configs)
   	.then(function (response) {
+	console.log(response);
 	    let mindNodeEl = "";
 	    currentObj.mindNodeObjs = response.data;
 	    for (let i = 0; i < currentObj.mindNodeObjs.length; i++) {
 	    	mindNodeEl += "<li class='list-group-item' onclick=\"getMindNode('" + currentObj.mindNodeObjs[i].name + "')\">" 
-								+ currentObj.mindNodeObjs[i].name 
+								+ currentObj.mindNodeObjs[i].name.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 						+ "</li>";
 	    }
 	    document.getElementById("list-mind-node").innerHTML = mindNodeEl;
@@ -233,7 +231,7 @@ function addNewMindNode() {
 	let x2 = document.getElementById("x2").value;
 	let y1 = document.getElementById("y1").value;
 	let y2 = document.getElementById("y2").value;
-	let note = document.getElementById("node-note").value;
+	let note = JSON.stringify(quill.getContents());
 	let data = {
 		action: MINDMAP_ACTION.ADD_MINDNODE,
 		MINDNODE_NAME: name,
@@ -265,7 +263,6 @@ function getMindNode(nodeName) {
 				+ '&MINDMAP_NAME=' + currentObj.mindMapName;
 	axios.get(url, configs)
   	.then(function (response) {
-  		console.log(response);
 	    let nodeInfo = response.data;
 	    let nodeCoordinate = JSON.parse(nodeInfo.coordinate);
 	    document.getElementById("mind-node-name").value = nodeInfo.name;
@@ -273,17 +270,16 @@ function getMindNode(nodeName) {
 		document.getElementById("x2").value = nodeCoordinate.x2;
 		document.getElementById("y1").value = nodeCoordinate.y1;
 		document.getElementById("y2").value = nodeCoordinate.y2;
-		document.getElementById("node-note").value = nodeInfo.note;
 		currentObj.mindNodeObj = response.data;
 		document.getElementById("mindnode-save-btn").disabled = true;
 		document.getElementById("mindnode-update-btn").disabled = false;
 		document.getElementById("mindnode-delete-btn").disabled = false;
-		let delta = response.data.article;
+		let delta = response.data.note;
 		if (delta) {
 		let tempQuill = new Quill(document.createElement("div"));
 		tempQuill.setContents(JSON.parse(delta));
-    	document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML;
-    	quill.setContents(delta);
+    	document.getElementById('offcanvas-note').innerHTML = tempQuill.root.innerHTML;
+    	quill.setContents(JSON.parse(delta));
     	}
 	 })	
 }
@@ -293,7 +289,7 @@ function updateMindNode() {
 	let x2 = document.getElementById("x2").value;
 	let y1 = document.getElementById("y1").value;
 	let y2 = document.getElementById("y2").value;
-	let note = document.getElementById("node-note").value;
+	let note = JSON.stringify(quill.getContents());
 	let data = {
 		action: MINDMAP_ACTION.UPDATE_MINDNODE,
 		MINDNODE_NAME: currentObj.mindNodeObj.name,
@@ -304,7 +300,7 @@ function updateMindNode() {
 			x2: x2,
 			y2: y2
 		}),
-		MINDNODE_NODE: note,
+		MINDNODE_NOTE: note,
 		MINDMAP_NAME: currentObj.mindMapName			
 	};
 	if (newName && x1 && x2 && y1 && y2 && note && currentObj.mindMapName) {	
@@ -345,29 +341,14 @@ function clearMindNodeForm() {
 		document.getElementById("x2").value = "";
 		document.getElementById("y1").value = "";
 		document.getElementById("y2").value = "";
-		document.getElementById("node-note").value = "";
 		document.getElementById("mindnode-save-btn").disabled = false;
 		document.getElementById("mindnode-update-btn").disabled = true;
 		document.getElementById("mindnode-delete-btn").disabled = true;
+		quill.setContents({});
 }
 function showPost() {
 	/*var html = quill.root.innerHTML;*/
 	let tempQuill = new Quill(document.createElement("div"));
 	tempQuill.setContents(quill.getContents());
-    document.getElementById('node-post').innerHTML = tempQuill.root.innerHTML;
-}
-function saveNodeArticle() {
-	let delta = quill.getContents();
-	let data = {
-		action: MINDMAP_ACTION.UPDATE_MINDNODE_ARTICLE,
-		MINDNODE_ID: currentObj.mindNodeObj.id,
-		MINDNODE_ARTICLE: JSON.stringify(delta)	
-	}
-	axios.post(MINDNODE_URL, data, configs)
-			.then(function (response) {
-			    alert(response.data);
-			  })
-			  .catch(function (error) {
-			    alert(error.data);
-			  });
+    document.getElementById('offcanvas-note').innerHTML = tempQuill.root.innerHTML;
 }

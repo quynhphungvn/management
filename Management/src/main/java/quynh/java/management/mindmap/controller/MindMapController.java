@@ -18,7 +18,7 @@ import quynh.java.management.mindmap.constants.MindMapRequestAction;
 import quynh.java.management.mindmap.constants.MindMapRequestParam;
 import quynh.java.management.mindmap.dao.MindMapDao;
 import quynh.java.management.mindmap.models.MindMap;
-import quynh.java.management.utils.files.DiagramImageCreator;
+import quynh.java.management.utils.plantuml.DiagramImageCreator;
 
 /**
  * Servlet implementation class MindMapController
@@ -54,9 +54,9 @@ public class MindMapController extends HttpServlet {
 		
 	}
 	private void returnMindMapHomePage(HttpServletRequest request, HttpServletResponse response) {
-		List<String> listMindMapName = mindMapDao.getAllMindMapName();
-		request.setAttribute("list-mindmap-name", listMindMapName);
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/mindmap/mindmap.jsp");
+		List<MindMap> listMindMap = mindMapDao.getAllMindMap();
+		request.setAttribute("list-mindmap", listMindMap);
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/mindmap/mindmap-page.jsp");
 		try {
 			rd.forward(request, response);
 		} catch (ServletException e) {

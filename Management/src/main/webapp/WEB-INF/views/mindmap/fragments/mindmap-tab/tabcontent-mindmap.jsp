@@ -1,8 +1,8 @@
-<%@ page import="java.util.List, java.lang.String"%>
+<%@ page import="java.util.List, java.lang.String, quynh.java.management.mindmap.models.MindMap"%>
 <div class="w-100 h-100">
 	<div>
 		<%
-		List<String> listMindMapName = (List<String>) request.getAttribute("list-mindmap-name");
+		List<MindMap> listMindMap = (List<MindMap>) request.getAttribute("list-mindmap");
 		%>
 		<%!
 			public String createMindMapItem(String mindmapName) {
@@ -13,9 +13,9 @@
 		%>
 		<ul class="list-group">
 			<%
-			if (listMindMapName != null)
-				for (String s : listMindMapName) {
-					out.print(createMindMapItem(s));
+			if (listMindMap != null)
+				for (MindMap mindMap : listMindMap) {
+					out.print(createMindMapItem(mindMap.getName()));
 			}
 			%>
 		</ul>
