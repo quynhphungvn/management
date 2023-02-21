@@ -21,6 +21,7 @@ public class ProjectCreateTable {
 			
 			String sqlUsecase = "create table if not exists project_usecase ("
 					+ " id int not null auto_increment,"
+					+ " name varchar(100) not null unique,"
 					+ " project_wireframe_id int not null,"
 					+ " activity_dia_text text,"
 					+ " sequence_dia_text text,"

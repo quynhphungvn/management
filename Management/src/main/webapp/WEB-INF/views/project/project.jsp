@@ -37,11 +37,11 @@
                 	<%
 	                	for (Project project : projects) {
 	                		out.print(
-			                	"<li class=\"project-item\">" +
+			                	"<li class=\"project-item\" onclick=\"chooseProject(this)\">" +
 				                    "<span class=\"project-name\">" + project.getName() + "</span>" +
 				                    "<span>" +
-				                        "<button onclick=\"showUpdateDialog(this," + project.getName() + ")\">Edit</button>" +
-				                        "<button onclick=\"deleteProject(" + project.getName() + ")\">Delete</button>" +
+				                        "<button onclick=\"showUpdateDialog(this)\">Edit</button>" +
+				                        "<button onclick=\"deleteProject(this)\">Delete</button>" +
 				                    "</span>" +
 			                	"</li>"
 	                		);
@@ -84,7 +84,11 @@
                                 <form action="">
                                     <div>
                                         <label>Project name</label>
-                                        <input type="text" class="js-input-project-name">                               
+                                        <input type="text" class="js-input-update-name">                               
+                                    </div>
+                                    <div>
+                                    	<label>New name</label>
+                                        <input type="text" class="js-input-update-newname">
                                     </div>
                                     <div>
                                         <button type="button" onclick="updateProject()">Update</button>
@@ -100,134 +104,155 @@
                 <div class="tab js-tabname-project">
                     <header class="tab-controls">
                         <button data-target="#wireframe">wireframe</button>
-                        <button data-target="#usecase">Usecase</button>
-                        <button data-target="#act">Act</button>
-                        <button data-target="#seq">Seq</button>
+                        <button data-target="#usecase">Usecase</button>                      
                         <button data-target="#class">Class</button>
                         <button data-target="#erd">ERD</button>
                     </header>
                     <main class="tab-contents">
                         <section id="wireframe" class="diagram-panel">
-                            <header>
-                                <select>
-                                    <option>wireframe 1</option>
-                                    <option>wireframe 2</option>
-                                </select>
-                                <div>
-                                    <button class="dialog-btn-open" data-target="#dialog-add-wireframe">+</button>
-                                    <button>-</button>
-                                    <button class="dialog-btn-open" data-target="#dialog-edit-wireframe">edit</button>
-                                </div>       
-                            </header>
-                            <main>
-                                <label for="">text</label>
-                                <textarea rows="25"></textarea>
-                            </main>
-                            <footer>
-                                <button>Clear</button>
-                                <div>
-                                    <button>Test</button>
-                                    <button>Save</button>
-                                </div>         
-                            </footer>
-                        </section>
+							<form>
+								<select class="wireframe-select">
+									<option>wireframe 1</option>
+									<option>wireframe 2</option>
+								</select>
+								<span>
+									<button class="wireframe-btn-add dialog-btn-open"
+										data-target="#dialog-add-wireframe">+</button>
+									<button class="wireframe-btn-delete">-</button>
+									<button class="wireframe-btn-edit dialog-btn-open"
+										data-target="#dialog-edit-wireframe">edit</button>
+								</span>
+							</form>
+							<div class="tab wireframe-tab">	
+								<header class="tab-controls">
+									<button data-target="#wireframe-text-form">Wireframe</button>
+									<button data-target="#usecase-text-form">Usecase</button>
+								</header>
+								<main class="tab-contents">
+									<section id="wireframe-text-form">
+										<form>
+											<div>
+												<label for="">text</label>
+												<textarea rows="25" placeholder="wireframe text"></textarea>
+											</div>
+											<button type="reset">Clear</button>
+											<button type="button">Reset</button>
+											<div>
+												<button>Test</button>
+												<button>Save</button>
+											</div>
+										</form>
+									</section>
+									<section id="usecase-text-form">
+										<form>									
+											<div>
+												<label for="">text</label>
+												<textarea rows="25" placeholder="usecase text"></textarea>
+											</div>
+											<div>
+												<button type="reset">Clear</button>
+												<button type="button">Reset</button>
+											</div>
+											
+											<div>
+												<button>Test</button>
+												<button>Save</button>
+											</div>
+										</form>
+									</section>
+								</main>				
+								
+							</div>	
+						</section>
                         <section id="usecase" class="diagram-panel">
-                            <div>
-                                <select>
-                                    <option>wireframe 1</option>
-                                    <option>wireframe 2</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="">text</label>
-                                <textarea rows="25"></textarea>
-                            </div>
-                            <div>
-                                <button>Clear</button>
-                                <div>
-                                    <button>Test</button>
-                                    <button>Save</button>
-                                </div>
-                                
-                            </div>
-                        </section>
-                        <section id="act" class="diagram-src">
+                        	<div>
+                        		<label>Wireframe:</label><b>Wireframe 1</b>
+                        	</div>
                             <div>
                                 <select>
                                     <option>Usecase 1</option>
                                     <option>Usecase 2</option>
                                 </select>
-                                <div>
-                                    <button class="dialog-btn-open" data-target="#dialog-add-wireframe">+</button>
-                                    <button>-</button>
-                                    <button class="dialog-btn-open" data-target="#dialog-edit-wireframe">edit</button>
-                                </div>       
+                                <span>
+                                	<button>+</button>
+                                	<button>-</button>
+                                	<button>Edit</button>
+                                </span>
                             </div>
-                            <div>
-                                <label for="">text</label>
-                                <textarea rows="25"></textarea>
-                            </div>
-                            <div>
-                                <button>Clear</button>
-                                <div>
-                                    <button>Test</button>
-                                    <button>Save</button>
-                                </div>
-                                
-                            </div>
-                        </section>
-                        <section id="seq" class="diagram-src">
-                            <div>
-                                <select>
-                                    <option>Usecase frame 1</option>
-                                    <option>Usecase frame 2</option>
-                                </select>
-                                <div>
-                                    <button class="dialog-btn-open" data-target="#dialog-add-wireframe">+</button>
-                                    <button>-</button>
-                                    <button class="dialog-btn-open" data-target="#dialog-edit-wireframe">edit</button>
-                                </div>       
-                            </div>
-                        <div>
-                            <label for="">text</label>
-                            <textarea rows="25"></textarea>
-                        </div>
-                        <div>
-                            <button>Clear</button>
-                            <div>
-                                <button>Test</button>
-                                <button>Save</button>
-                            </div>
-                            
-                        </div>
-                    
-                        </section>
-                        <section id="class" class="diagram-src"><div>
-                            <label for="">Class diagram</label>
-                            <textarea rows="25"></textarea>
-                        </div>
-                        <footer>
-                            <button>Clear</button>
-                            <div>
-                                <button>Test</button>
-                                <button>Save</button>
-                            </div>
-                            
-                        </footer>
+                            <div class="tab">
+                            	<header class="tab-controls">
+                            		<button data-target="#activity-text-form">Actitivy</button>
+                            		<button data-target="#sequence-text-form">Sequence</button>
+                            	</header>
+                            	<main class="tab-contents">
+                            		<section id="activity-text-form">
+                            			<form>
+	                            			<div>
+		                            			<label for="">text</label>
+	                                			<textarea rows="25" placeholder="activity"></textarea>
+	                            			</div>
+			                            	<div>
+			                                	<button >Clear</button>
+			                                	<button>Reset</button>
+			                                </div>
+			                                <div>
+			                                    <button>Test</button>
+			                                    <button>Save</button>
+			                                </div>
+                            			</form>
+                            		</section>
+                            		<section id="sequence-text-form">
+                            			<form>
+	                            			<div>
+		                            			<label for="">text</label>
+	                                			<textarea rows="25" placeholder="sequence"></textarea>
+	                            			</div>
+			                            	<div>
+			                                	<button >Clear</button>
+			                                	<button>Reset</button>
+			                                </div>
+			                                <div>
+			                                    <button>Test</button>
+			                                    <button>Save</button>
+			                                </div>
+                            			</form>
+                            		</section>
+                            	</main>                                
+                            </div>        
+                        </section>                    
+                        <section id="class" class="diagram-src">
+                        	<form>
+	                        	<div>
+		                            <label for="">Class diagram</label>
+		                            <textarea rows="25" class="js-textarea-class"></textarea>
+	                        	</div>
+	                        	<div>
+	                        		<button>Clear</button>
+	                        		<button>Reset</button>
+	                        	</div>
+	                        	
+	                            <div>
+	                                <button>Test</button>
+	                                <button type="button" onclick="updateClassDia()">Save</button>
+	                            </div>
+                        	</form>                        	                       
                         </section>
                         <section id="erd" class="diagram-panel">
-                            <main>
-                                <label for="">ERD diagram</label>
-                                <textarea rows="25"></textarea>
-                            </main>
-                            <footer>
-                                <button>Clear</button>
-                                <div>
-                                    <button>Test</button>
-                                    <button>Save</button>
-                                </div>
-                                
-                            </footer>
+                            <form>
+	                        	<div>
+		                            <label for="">Class diagram</label>
+		                            <textarea rows="25" class="js-textarea-erd"></textarea>
+	                        	</div>
+	                        	<div>
+	                        		<button>Clear</button>
+	                        		<button>Reset</button>
+	                        	</div>
+	                        	
+	                            <div>
+	                                <button>Test</button>
+	                                <button>Save</button>
+	                            </div>
+                        	</form> 
                         </section>
                     </main>
                 </div>
@@ -240,10 +265,16 @@
                             </header>
                             <hr/>
                             <main>
-                                <div>
-                                    test
-                                    <h1>abc</h1>
-                                </div>                 
+                                <form>
+                                	<div>
+                                		<label>Wireframe</label>
+                                		<input type="text" placeholder="wireframe" />
+                                	</div>
+                                	<div>
+                                		<button type="button" onclick="addWireframe(this)">Add</button>
+                                		<button type="reset">Clear</button>
+                                	</div>
+                                </form>                 
                             </main>
                             <hr/>
                             <footer>

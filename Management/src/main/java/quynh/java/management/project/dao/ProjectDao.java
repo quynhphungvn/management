@@ -28,5 +28,26 @@ public class ProjectDao {
 		session.close();
 		return projects;
 	}
-	
+	public void update(Project project) {
+		Session session = sessionFactory.openSession();
+		session.getTransaction().begin();
+		session.update(project);
+		session.getTransaction().commit();
+		session.close();
+	}
+	public Project getByName(String name) {
+		Session session = sessionFactory.openSession();
+		Query<Project> query = session.createQuery("FROM Project WHERE name=:name");
+		query.setParameter("name", name);
+		Project p = query.getSingleResult();
+		session.close();
+		return p;
+	}
+	public void delete(Project project) {
+		Session session = sessionFactory.openSession();
+		session.getTransaction().begin();
+		session.delete(project);
+		session.getTransaction().commit();
+		session.close();	
+	}
 }

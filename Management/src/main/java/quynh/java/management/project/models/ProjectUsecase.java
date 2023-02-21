@@ -24,7 +24,7 @@ public class ProjectUsecase {
 	private int id;
 	private String name;
 	@ManyToOne
-	@JoinColumn(name="wireframe_id")
+	@JoinColumn(name="project_wireframe_id")
 	private ProjectWireframe wireframe;
 	@Column(name="sequence_dia_text")
 	private String sequenceDiaText;

@@ -109,6 +109,9 @@ textarea {
 .project-item:hover > span:nth-child(2) {
     visibility: visible;
 }
+.project-item.active {
+	background-color: var(--active);
+}
 #project > button {
     align-self: end;
 }

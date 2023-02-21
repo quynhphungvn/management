@@ -43,5 +43,6 @@
     background-color: var(--active);
 }
 .tab-contents section {
+	padding: 0.25rem;
     display: none;
 }

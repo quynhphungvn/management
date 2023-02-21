@@ -41,7 +41,16 @@ public class ProjectController extends HttpServlet {
 		String action = request.getParameter("action");
 		if (action == null) {
 			returnProjectHomePage(request, response);
-		} 	
+		} else if (action.equals("GET")) {
+			String projectName = request.getParameter("project-name");
+			Project project = projectServices.getProject(projectName);
+			try {
+				response.getOutputStream().print(gson.toJson(project));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	private void returnProjectHomePage(HttpServletRequest request, HttpServletResponse response) {
 		List<Project> projects = projectServices.getAllProject();
@@ -69,6 +78,25 @@ public class ProjectController extends HttpServlet {
 		else if (action.equals("ADD")) {
 			String projectName = request.getParameter("projectName");
 			projectServices.addNewProject(projectName);
+		}
+		else if (action.equals("UPDATE")) {
+			String projectName = request.getParameter("project-name");
+			String newProjectName = request.getParameter("new-project-name");
+			projectServices.updateProject(projectName, newProjectName);
+		}
+		else if (action.equals("DELETE")) {
+			String projectName = request.getParameter("project-name");
+			projectServices.deleteProject(projectName);
+		}
+		else if (action.equals("UPDATE-CLASS")) {
+			String projectName = request.getParameter("project-name");
+			String classDiaText = request.getParameter("dia");
+			projectServices.updateClassDiagram(projectName, classDiaText);
+		}
+		else if (action.equals("UPDATE-ERD")) {
+			String projectName = request.getParameter("project-name");
+			String classDiaText = request.getParameter("dia");
+			projectServices.updateErdDiagram(projectName, classDiaText);
 		}
 	}
 	private void processPostRequest(HttpServletRequest request, HttpServletResponse response) {}
