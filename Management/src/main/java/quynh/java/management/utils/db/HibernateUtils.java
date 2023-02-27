@@ -11,8 +11,8 @@ import org.hibernate.service.ServiceRegistry;
 import quynh.java.management.mindmap.models.MindMap;
 import quynh.java.management.mindmap.models.MindNode;
 import quynh.java.management.project.models.Project;
-import quynh.java.management.project.models.ProjectUsecase;
-import quynh.java.management.project.models.ProjectWireframe;
+import quynh.java.management.project.models.Usecase;
+import quynh.java.management.project.models.Wireframe;
 import quynh.java.management.utils.test.User;
 
 public class HibernateUtils {
@@ -34,8 +34,8 @@ public class HibernateUtils {
 		conf.addAnnotatedClass(MindMap.class);
 		conf.addAnnotatedClass(MindNode.class);
 		conf.addAnnotatedClass(Project.class);
-		conf.addAnnotatedClass(ProjectUsecase.class);
-		conf.addAnnotatedClass(ProjectWireframe.class);
+		conf.addAnnotatedClass(Usecase.class);
+		conf.addAnnotatedClass(Wireframe.class);
 		ServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(conf.getProperties()).build();
 		FACTORY = conf.buildSessionFactory(registry);
 	}

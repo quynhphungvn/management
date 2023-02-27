@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="dialog-template">
+        <button class="dialog-btn-open" data-target="#dialog-test">Open Dialog</button>
+        <!-- dialog -->
+        <dialog id="dialog-test" class="dialog">
+            <div class="dialog-container">
+                <div class="dialog-content">
+                    <header>
+                        <h5>Dialog title</h5>
+                        <button class="dialog-btn-close" data-target="#dialog-test">X</button>
+                    </header>
+                    <hr/>
+                    <main>
+                        <div>
+                            test
+                            <h1>abc</h1>
+                        </div>                 
+                    </main>
+                    <hr/>
+                    <footer>
+
+                    </footer>
+                </div>
+            </div>
+        </dialog>
+    </div>
+    <div id="tab-template">
+        <div class="tab js-tabname-project">
+            <header class="tab-controls">
+                <button data-target="#wireframe">wireframe</button>
+                <button data-target="#usecase">Usecase</button>
+                <button data-target="#act">Act</button>
+                <button data-target="#seq">Seq</button>
+                <button data-target="#class">Class</button>
+                <button data-target="#erd">ERD</button>
+            </header>
+            <main class="tab-contents">
+                <section id="wireframe">
+                    
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="./common.js"></script>
+</body>
+</html>

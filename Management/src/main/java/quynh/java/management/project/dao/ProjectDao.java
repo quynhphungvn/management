@@ -40,6 +40,7 @@ public class ProjectDao {
 		Query<Project> query = session.createQuery("FROM Project WHERE name=:name");
 		query.setParameter("name", name);
 		Project p = query.getSingleResult();
+		System.out.println("size wireframe: " + p.getWireframes().size());
 		session.close();
 		return p;
 	}

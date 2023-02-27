@@ -1,5 +1,6 @@
 package quynh.java.management.project.models;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "project_wireframe")
-public class ProjectWireframe {
+public class Wireframe implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -33,6 +34,6 @@ public class ProjectWireframe {
 	@ManyToOne
 	@JoinColumn(name = "project_id")
 	private Project project;
-	@OneToMany(mappedBy = "wireframe", fetch = FetchType.EAGER)
-	private Set<ProjectUsecase> usecases;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "wireframe")
+	private Set<Usecase> usecases;
 }

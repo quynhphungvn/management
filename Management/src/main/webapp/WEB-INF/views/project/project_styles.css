@@ -133,8 +133,11 @@ textarea {
     position: relative;
 }
 /*  */
-#main {
+#dia-img {
     display: flex;
     overflow: auto;
     flex-grow: 1;
+}
+#dia-img section img:nth-child(2) {
+	display: none;
 }

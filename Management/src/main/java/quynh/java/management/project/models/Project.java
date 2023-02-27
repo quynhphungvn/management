@@ -1,5 +1,7 @@
 package quynh.java.management.project.models;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -19,13 +21,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "project")
-public class Project {
+public class Project implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
-	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
-	private Set<ProjectWireframe> projectWireframes;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
+	private List<Wireframe> wireframes;
 	@Column(name="class_dia_text")
 	private String classDiaText;
 	@Column(name="erd_dia_text")

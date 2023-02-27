@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.List, quynh.java.management.project.models.Project" %>
+<%@ page import="java.util.List,
+					 quynh.java.management.project.models.Project,
+					 quynh.java.management.project.models.Wireframe
+					 " %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,15 +35,15 @@
         </nav>
         <aside id="aside">
             <div id="project">
-                <input type="text" class="js-input-prj-search" onkeyup="filterProjectItems()"/>
-                <ul class="js-project-list">
+                <input type="text" onkeyup="filterProjectItems()"/>
+                <ul>
                 	<%
 	                	for (Project project : projects) {
 	                		out.print(
 			                	"<li class=\"project-item\" onclick=\"chooseProject(this)\">" +
 				                    "<span class=\"project-name\">" + project.getName() + "</span>" +
 				                    "<span>" +
-				                        "<button onclick=\"showUpdateDialog(this)\">Edit</button>" +
+				                        "<button onclick=\"showEditDialog(this)\">Edit</button>" +
 				                        "<button onclick=\"deleteProject(this)\">Delete</button>" +
 				                    "</span>" +
 			                	"</li>"
@@ -61,7 +64,7 @@
                                 <form action="">
                                     <div>
                                         <label>Project name</label>
-                                        <input type="text" class="js-input-project-name">
+                                        <input type="text">
                                     </div>
                                     <div>
                                         <button type="button" onclick="addProject()">Add</button>
@@ -72,23 +75,23 @@
                         </div>
                     </div>
                 </dialog>
-                <dialog id="dialog-update-project" class="dialog">
+                <dialog id="dialog-edit-project" class="dialog">
                     <div class="dialog-container">
                         <div class="dialog-content">
                             <header>
                                 <h5>Update project</h5>
-                                <button class="dialog-btn-close" data-target="#dialog-update-project">X</button>
+                                <button class="dialog-btn-close" data-target="#dialog-edit-project">X</button>
                             </header>
                             <hr/>
                             <main>
                                 <form action="">
                                     <div>
                                         <label>Project name</label>
-                                        <input type="text" class="js-input-update-name">                               
+                                        <input type="text" name="current-name">                               
                                     </div>
                                     <div>
                                     	<label>New name</label>
-                                        <input type="text" class="js-input-update-newname">
+                                        <input type="text" name="new-name">
                                     </div>
                                     <div>
                                         <button type="button" onclick="updateProject()">Update</button>
@@ -101,35 +104,33 @@
                 </dialog>
             </div>
             <div id="project-diagram">
-                <div class="tab js-tabname-project">
+                <div class="tab">
                     <header class="tab-controls">
-                        <button data-target="#wireframe">wireframe</button>
-                        <button data-target="#usecase">Usecase</button>                      
-                        <button data-target="#class">Class</button>
-                        <button data-target="#erd">ERD</button>
+                        <button data-target="#wireframe-content">wireframe</button>
+                        <button data-target="#usecase-content">Usecase</button>                      
+                        <button data-target="#class-content">Class</button>
+                        <button data-target="#erd-content">ERD</button>
                     </header>
                     <main class="tab-contents">
-                        <section id="wireframe" class="diagram-panel">
+                        <section id="wireframe-content" class="diagram-panel">
 							<form>
-								<select class="wireframe-select">
-									<option>wireframe 1</option>
-									<option>wireframe 2</option>
+								<select onchange="chooseWireframe()">
+									<option value="default">Choose Wireframe</option>															
 								</select>
 								<span>
-									<button class="wireframe-btn-add dialog-btn-open"
+									<button type="button" class="wireframe-btn-add dialog-btn-open"
 										data-target="#dialog-add-wireframe">+</button>
-									<button class="wireframe-btn-delete">-</button>
-									<button class="wireframe-btn-edit dialog-btn-open"
-										data-target="#dialog-edit-wireframe">edit</button>
+									<button type="button" onclick="deleteWireframe()">-</button>
+									<button type="button" onclick="openDialogEditWireframeName()">edit</button>
 								</span>
 							</form>
-							<div class="tab wireframe-tab">	
+							<div id="wireframe-subtab" class="tab">	
 								<header class="tab-controls">
-									<button data-target="#wireframe-text-form">Wireframe</button>
-									<button data-target="#usecase-text-form">Usecase</button>
+									<button data-target="#wireframe-subtab-wf">Wireframe</button>
+									<button data-target="#wireframe-subtab-uc">Usecase</button>
 								</header>
 								<main class="tab-contents">
-									<section id="wireframe-text-form">
+									<section id="wireframe-subtab-wf">
 										<form>
 											<div>
 												<label for="">text</label>
@@ -139,11 +140,11 @@
 											<button type="button">Reset</button>
 											<div>
 												<button>Test</button>
-												<button>Save</button>
+												<button type="button" onclick="updateWireframeSubTab()">Save</button>
 											</div>
 										</form>
 									</section>
-									<section id="usecase-text-form">
+									<section id="wireframe-subtab-uc">
 										<form>									
 											<div>
 												<label for="">text</label>
@@ -156,7 +157,7 @@
 											
 											<div>
 												<button>Test</button>
-												<button>Save</button>
+												<button type="button" onclick="updateUsecaseSubTab()">Save</button>
 											</div>
 										</form>
 									</section>
@@ -164,14 +165,13 @@
 								
 							</div>	
 						</section>
-                        <section id="usecase" class="diagram-panel">
+                        <section id="usecase-content" class="diagram-panel">
                         	<div>
-                        		<label>Wireframe:</label><b>Wireframe 1</b>
+                        		<label>Wireframe:</label><b>None</b>
                         	</div>
                             <div>
                                 <select>
-                                    <option>Usecase 1</option>
-                                    <option>Usecase 2</option>
+                                	<option value="default">Choose Usecase</option>                                   
                                 </select>
                                 <span>
                                 	<button>+</button>
@@ -179,13 +179,13 @@
                                 	<button>Edit</button>
                                 </span>
                             </div>
-                            <div class="tab">
+                            <div id="usecase-subtab" class="tab">
                             	<header class="tab-controls">
-                            		<button data-target="#activity-text-form">Actitivy</button>
-                            		<button data-target="#sequence-text-form">Sequence</button>
+                            		<button data-target="#usecase-subtab-act">Actitivy</button>
+                            		<button data-target="#usecase-subtab-seq">Sequence</button>
                             	</header>
                             	<main class="tab-contents">
-                            		<section id="activity-text-form">
+                            		<section id="usecase-subtab-act">
                             			<form>
 	                            			<div>
 		                            			<label for="">text</label>
@@ -201,7 +201,7 @@
 			                                </div>
                             			</form>
                             		</section>
-                            		<section id="sequence-text-form">
+                            		<section id="usecase-subtab-seq">
                             			<form>
 	                            			<div>
 		                            			<label for="">text</label>
@@ -220,37 +220,36 @@
                             	</main>                                
                             </div>        
                         </section>                    
-                        <section id="class" class="diagram-src">
+                        <section id="class-content" class="diagram-src">
                         	<form>
 	                        	<div>
 		                            <label for="">Class diagram</label>
-		                            <textarea rows="25" class="js-textarea-class"></textarea>
+		                            <textarea rows="25"></textarea>
 	                        	</div>
 	                        	<div>
-	                        		<button>Clear</button>
-	                        		<button>Reset</button>
-	                        	</div>
-	                        	
+	                        		<button type="reset">Clear</button>
+	                        		<button type="button" onclick="resetChangingClassDia()">Reset</button>
+	                        	</div>                  	
 	                            <div>
-	                                <button>Test</button>
-	                                <button type="button" onclick="updateClassDia()">Save</button>
+	                                <button type="button" onclick="testClassDia()">Test</button>
+	                                <button type="button" onclick="saveClassDia()">Save</button>
 	                            </div>
                         	</form>                        	                       
                         </section>
-                        <section id="erd" class="diagram-panel">
+                        <section id="erd-content" class="diagram-src">
                             <form>
 	                        	<div>
 		                            <label for="">Class diagram</label>
-		                            <textarea rows="25" class="js-textarea-erd"></textarea>
+		                            <textarea rows="25"></textarea>
 	                        	</div>
 	                        	<div>
-	                        		<button>Clear</button>
-	                        		<button>Reset</button>
+	                        		<button type="reset">Clear</button>
+	                        		<button type="button" onclick="resetChangingErdDia()">Reset</button>
 	                        	</div>
 	                        	
 	                            <div>
-	                                <button>Test</button>
-	                                <button>Save</button>
+	                                <button type="button" onclick="testErdDia()">Test</button>
+	                                <button type="button" onclick="saveErdDia()">Save</button>
 	                            </div>
                         	</form> 
                         </section>
@@ -292,10 +291,19 @@
                             </header>
                             <hr/>
                             <main>
-                                <div>
-                                    test
-                                    <h1>abc</h1>
-                                </div>                 
+                                <form >
+                                	<div>
+                                		<label>Name</label>
+                                		<input name="old-name" type="text" disabled/>
+                                	</div>
+                                	<div>
+                                		<label>New name: </label>
+                                		<input name="new-name" type="text" />
+                                	</div>
+                                	<div>                               		
+                                		<button type="button" onclick="editWireframeName()">Save</button>                        
+                               		</div>
+                                </form>            
                             </main>
                             <hr/>
                             <footer>
@@ -306,8 +314,8 @@
                 </dialog>
             </div>
         </aside>
-        <main id="main">
-            <div class="tab js-tabname-project-img">
+        <main id="dia-img">
+            <div class="tab">
                 <header class="tab-controls">
                     <button data-target="#img-wireframe">wireframe</button>
                     <button data-target="#img-usecase">Usecase</button>
@@ -318,22 +326,28 @@
                 </header>
                 <main class="tab-contents">
                     <section id="img-wireframe">
-                        <img src="https://wallpaperaccess.com/full/138728.jpg" />
+                        <img src="/Management/resources/project/images/wireframe.png" />
+                        <img src="/Management/resources/project/images/wireframe-test.png" />
                     </section>
                     <section id="img-usecase">
-                        <img src="https://wallpaperaccess.com/full/138728.jpg" />
+                        <img src="/Management/resources/project/images/usecase.png" />
+                        <img src="/Management/resources/project/images/usecase-test.png" />
                     </section>
                     <section id="img-act">
-                        <img src="https://wallpaperaccess.com/full/138728.jpg" />
+                        <img src="/Management/resources/project/images/activity.png" />
+                        <img src="/Management/resources/project/images/activity-test.png" />
                     </section>
                     <section id="img-seq">
-                        <img src="https://wallpaperaccess.com/full/138728.jpg" />
+                        <img src="/Management/resources/project/images/sequence.png" />
+                        <img src="/Management/resources/project/images/sequence-test.png" />
                     </section>
                     <section id="img-class">
-                        <img src="https://wallpaperaccess.com/full/138728.jpg" />
+                        <img src="/Management/resources/project/images/class.png" />
+                        <img src="/Management/resources/project/images/class-test.png" />
                     </section>
                     <section id="img-erd">
-                        <img src="https://wallpaperaccess.com/full/138728.jpg" />
+                        <img src="/Management/resources/project/images/erd.png" />
+                        <img src="/Management/resources/project/images/erd-test.png" />
                     </section>
                 </main>
             </div>
@@ -341,6 +355,7 @@
     </main>
     <script src="/Management/resources/common/js/scripts.js"></script>
     <script><%@include file="/WEB-INF/views/project/script-fragments/project.js"%></script>
+    <script><%@include file="/WEB-INF/views/project/script-fragments/wireframe.js"%></script>
 </body>
 
 </html>

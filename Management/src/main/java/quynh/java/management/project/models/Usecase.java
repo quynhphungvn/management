@@ -1,5 +1,7 @@
 package quynh.java.management.project.models;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,14 +20,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "project_usecase")
-public class ProjectUsecase {
+public class Usecase implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
 	@ManyToOne
 	@JoinColumn(name="project_wireframe_id")
-	private ProjectWireframe wireframe;
+	private Wireframe wireframe;
 	@Column(name="sequence_dia_text")
 	private String sequenceDiaText;
 	@Column(name="activity_dia_text")
