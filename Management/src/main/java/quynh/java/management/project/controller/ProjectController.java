@@ -18,6 +18,7 @@ import quynh.java.management.project.models.Project;
 import quynh.java.management.project.models.Usecase;
 import quynh.java.management.project.models.Wireframe;
 import quynh.java.management.project.services.ProjectServices;
+import quynh.java.management.project.services.UsecaseServices;
 import quynh.java.management.project.services.WireframeServices;
 
 /**
@@ -29,6 +30,7 @@ public class ProjectController extends HttpServlet {
     private Gson gson = new Gson();
     private ProjectServices projectServices = new ProjectServices();
     private WireframeServices wireframeServices = new WireframeServices();
+    private UsecaseServices usecaseServices = new UsecaseServices();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -47,6 +49,7 @@ public class ProjectController extends HttpServlet {
 				+ "resources/project/images/";
         projectServices.setImageDiaRealPath(imgPathFolder);
         wireframeServices.setImageDiaRealPath(imgPathFolder);
+        usecaseServices.setImageDiaRealPath(imgPathFolder);
 		String action = request.getParameter("action");
 		if (action == null) {
 			returnProjectHomePage(request, response);
@@ -88,6 +91,19 @@ public class ProjectController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if (action.equals("GET-USECASE")) {
+			String projectName = request.getParameter("project-name");
+			String wireframeName = request.getParameter("wireframe-name");
+			String usecaseName = request.getParameter("usecase-name");
+			Usecase usecase = usecaseServices.getUsecase(usecaseName, wireframeName, projectName);
+			usecase.setWireframe(null);
+			String usecaseJson = gson.toJson(usecase);		
+			try {
+				response.getOutputStream().print(usecaseJson);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	private void returnProjectHomePage(HttpServletRequest request, HttpServletResponse response) {
@@ -113,6 +129,7 @@ public class ProjectController extends HttpServlet {
 				+ "resources/project/images/";
         projectServices.setImageDiaRealPath(imgPathFolder);
         wireframeServices.setImageDiaRealPath(imgPathFolder);
+        usecaseServices.setImageDiaRealPath(imgPathFolder);
 		String action = request.getParameter("action");
 		if (action == null) {
 			System.out.println("action is null! and name:" + request.getParameter("projectName"));
@@ -141,8 +158,9 @@ public class ProjectController extends HttpServlet {
 			projectServices.updateErdDiagram(projectName, erdDiaText);
 		} 
 		else if (action.contains("TEST")) {
+			String diaType = request.getParameter("dia-type");
 			String diaText = request.getParameter("dia");
-			projectServices.testDiagram(action, diaText);
+			projectServices.testDiagram(diaType, diaText);
 		} 
 		else if (action.equals("ADD-WIREFRAME")) {
 			String wireframeName = request.getParameter("wireframe-name");
@@ -157,8 +175,45 @@ public class ProjectController extends HttpServlet {
 			String wireframeNewName = request.getParameter("wireframe-newname");
 			String projectName = request.getParameter("project-name");
 			wireframeServices.editWireframeName(wireframeName, wireframeNewName, projectName);
+		} else if (action.equals("UPDATE-WIREFRAME-DIA")) {
+			String wireframeName = request.getParameter("wireframe-name");
+			String wireframeDiaText = request.getParameter("wireframe-dia");
+			String projectName = request.getParameter("project-name");
+			wireframeServices.updateWireframeDia(wireframeName, wireframeDiaText, projectName);
+		} else if (action.equals("UPDATE-USECASE-DIA")) {
+			String wireframeName = request.getParameter("wireframe-name");
+			String wireframeDiaText = request.getParameter("usecase-dia");
+			String projectName = request.getParameter("project-name");
+			wireframeServices.updateWireframeDia(wireframeName, wireframeDiaText, projectName);
+		} 
+		else if (action.equals("ADD-USECASE")) {
+			String usecaseName = request.getParameter("usecase-name");
+			String wireframeName = request.getParameter("wireframe-name");
+			String projectName = request.getParameter("project-name");
+			usecaseServices.addUsecase(usecaseName, wireframeName, projectName);
+		} else if (action.equals("DELETE-USECASE")) {
+			String usecaseName = request.getParameter("usecase-name");
+			String wireframeName = request.getParameter("wireframe-name");
+			String projectName = request.getParameter("project-name");
+			usecaseServices.deleteUsecase(usecaseName, wireframeName, projectName);
+		} else if (action.equals("EDIT-USECASE-NAME")) {
+			String usecaseName = request.getParameter("usecase-name");
+			String usecaseNewName = request.getParameter("usecase-newname");
+			String wireframeName = request.getParameter("wireframe-name");
+			String projectName = request.getParameter("project-name");
+			usecaseServices.editUsecaseName(usecaseName, usecaseNewName, wireframeName, projectName);
+		} else if (action.equals("UPDATE-ACTIVITY-DIA")) {
+			String usecaseName = request.getParameter("usecase-name");
+			String wireframeName = request.getParameter("wireframe-name");
+			String activityDiaText = request.getParameter("activity-dia");
+			String projectName = request.getParameter("project-name");
+			usecaseServices.updateActivityDia(usecaseName, wireframeName, projectName, activityDiaText);
+		} else if (action.equals("UPDATE-SEQUENCE-DIA")) {
+			String usecaseName = request.getParameter("usecase-name");
+			String wireframeName = request.getParameter("wireframe-name");
+			String sequenceDiaText = request.getParameter("sequence-dia");
+			String projectName = request.getParameter("project-name");
+			usecaseServices.updateActivityDia(usecaseName, wireframeName, projectName, sequenceDiaText);
 		}
-	}
-	private void processPostRequest(HttpServletRequest request, HttpServletResponse response) {}
-		
+	}		
 }

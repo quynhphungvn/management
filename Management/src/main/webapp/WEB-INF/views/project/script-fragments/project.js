@@ -2,7 +2,9 @@ let current = {
 	projectItemEdit: {},
 	projectItemDelete: {},
 	projectChoosingEl: null,
-	projectChoosingData: {}
+	projectChoosingData: {},
+	wireframeChoosing: {},
+	usecaseChoosing: {}
 }
 function filterProjectItems() {
     let projectItems = document.querySelector("#project ul")
@@ -166,8 +168,8 @@ function setActiveProjectUi() {
 	current.projectChoosingEl.classList.add("active");
 }
 function refreshDiaProject() {
-	refreshSrcImgDia("class");
-	refreshSrcImgDia("erd");
+	refreshDiaImg("class");
+	refreshDiaImg("erd");
 }
 function saveClassDia() {
 	if (current.projectChoosingEl == null) 
@@ -189,92 +191,15 @@ function saveClassDia() {
         .catch((error) => {console.error('Error:', error)});
     }
 }
-function resetChangingClassDia() {
-	let classTextAreaEl = document.querySelector("#class-content textarea");
-	classTextAreaEl.value = current.projectChoosingData.classDiaText;
-	showImgDia("class");
-}
-function resetChangingErdDia() {
-	let classTextAreaEl = document.querySelector("#erd-content textarea");
-	classTextAreaEl.value = current.projectChoosingData.erdDiaText;
-	showImgDia("erd");
-}
 function testClassDia() {
-	let action = "TEST-CLASS";
+	let type = "class";
 	let diaText = document.querySelector("#class-content textarea").value;
-	const options = {
-        method: 'POST',
-        headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},   
-        body: "action=" + action 
-        		+ "&dia=" + encodeURI(diaText)
-    }
-    fetch("/Management/project/", options)
-        .then((res) => {
-			changeUiForTestDia(action);
-		})
-        .catch((error) => {console.error('Error:', error)});
+	sendTestRequest(type, diaText);
 }
 function testErdDia() {
-	let action = "TEST-ERD";
+	let type = "erd";
 	let diaText = document.querySelector("#erd-content textarea").value;
-	const options = {
-        method: 'POST',
-        headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},   
-        body: "action=" + action 
-        		+ "&dia=" + encodeURI(diaText)
-    }
-    fetch("/Management/project/", options)
-        .then((res) => {
-			changeUiForTestDia(action);
-		})
-        .catch((error) => {console.error('Error:', error)});
-}
-function changeUiForTestDia(action) {
-	if (action == "TEST-WIREFRAME") {
-		refreshSrcImgDiaTest("wireframe");
-		showImgDiaTest("wireframe");
-	} else if (action == "TEST-USECASE") {
-		refreshSrcImgDiaTest("usecase");
-		showImgDiaTest("usecase");
-	} else if (action == "TEST-ACTIVITY") {
-		refreshSrcImgDiaTest("activity");
-		showImgDiaTest("activity");
-	} else if (action == "TEST-SEQUENCE") {
-		refreshSrcImgDiaTest("sequence");
-		showImgDiaTest("sequence");
-	} else if (action == "TEST-CLASS") {
-		refreshSrcImgDiaTest("class");
-		showImgDiaTest("class");
-	} else if (action == "TEST-ERD") {
-		refreshSrcImgDiaTest("erd");
-		showImgDiaTest("erd");
-	}
-}
-function refreshSrcImgDia(name) {
-	let imgEl = document.querySelector("#img-"+name +" img");
-	imgEl.src = "/Management/resources/project/images/"+ name + ".png?" + new Date().getTime();
-}
-function refreshSrcImgDiaTest(name) {
-	let testImgEl = document.querySelector("#img-"+name +" img:nth-child(2)");
-	testImgEl.src = "/Management/resources/project/images/" + name + "-test.png?" + new Date().getTime();
-}
-function showImgDia(name) {
-	let imgEl = document.querySelector("#img-"+ name +" img");
-	imgEl.style.display = "inline-block";
-	let testImgEl = document.querySelector("#img-"+name +" img:nth-child(2)");
-	testImgEl.style.display = "none";
-}
-function showImgDiaTest(name) {
-	let imgEl = document.querySelector("#img-"+ name +" img");
-	console.log(imgEl);
-	imgEl.style.display = "none";
-	let testImgEl = document.querySelector("#img-"+ name +" img:nth-child(2)");
-	console.log(testImgEl);
-	testImgEl.style.display = "inline-block";
+	sendTestRequest(type, diaText);
 }
 function saveErdDia() {
 	if (current.projectChoosingEl == null) 

@@ -110,7 +110,7 @@ CREATE TABLE `project` (
   `erd_dia_text` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +119,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'sdfsdf',NULL,NULL);
+INSERT INTO `project` VALUES (2,'abc','@startuml\nactor user\nusecase (init page) as u1\nuser --> u1\n@enduml','@startuml\nleft to right direction\nactor user\npackage project {\nusecase (init page) as u1\nusecase (search project) as u2\nusecase (crud project) as u3\nusecase (choose project) as u4\n}\npackage wireframe_tab {\nusecase (choose wireframe_tab) as u5\nusecase (choose wireframe_select) as u6\nusecase (crud wireframe) as u7\nusecase (choose wireframe_subtab) as u8\nusecase (choose usecase_subtab) as u9\nusecase (save wireframe_dia) as u10\nusecase (save usecase_dia) as u11\nusecase (test wireframe_diagram) as u12\nusecase (test usecase_diagram) as u13\n}\npackage usecase_tab {\nusecase (choose usecase_tab) as u14\nusecase (choose usecase_select) as u15\nusecase (crud usecase) as u16\nusecase (choose activity_tab) as u17\nusecase (choose sequence_tab) as u18\nusecase (test activity_diagram) as u19\nusecase (test sequence_diagram) as u20\nusecase (save activity_diagram) as u21\nusecase (save sequence_diagram) as u22\n}\npackage class_tab {\nusecase (choose class_tab) as u23\nusecase (test class_diagram) as u24\nusecase (save class_diagram) as u25\n}\npackage erd_tab {\nusecase (choose erd_tab) as u26\nusecase (test erd_diagram) as u27\nusecase (save erd_diagram) as u28\n}\nuser --> u1\nuser --> u2\nuser --> u3\nuser --> u4\nuser --> u5\nuser --> u6 \nuser --> u7\nuser --> u8\nuser --> u9\nuser --> u10\nuser --> u11\nuser --> u12\nuser --> u13\n@enduml'),(9,'Quynh','@startuml\r\n\r\nClass01 \"1\" *-- \"many\" Class02 : contains\r\n\r\nClass03 o-- Class04 : aggregation\r\n\r\nClass05 --> \"1\" Class06\r\n\r\n@enduml\r\n','@startuml\r\nEntity01 }|..|| Entity02\r\nEntity03 }o..o| Entity04\r\nEntity05 ||--o{ Entity06\r\nEntity07 |o--|| Entity08\r\n@enduml\r\n'),(14,'123','@startuml\r\n\r\nClass01 \"1\" *-- \"many\" Class02 : contains\r\n\r\nClass03 o-- Class04 : aggregation\r\n\r\nClass05 --> \"1\" Class06\r\n\r\n@enduml\r\n','@startuml\r\nEntity01 }|..|| Entity02\r\nEntity03 }o..o| Entity04\r\nEntity05 ||--o{ Entity06\r\nEntity07 |o--|| Entity08\r\n@enduml\r\n');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,11 +132,13 @@ DROP TABLE IF EXISTS `project_usecase`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `project_usecase` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
   `project_wireframe_id` int NOT NULL,
   `activity_dia_text` text,
   `sequence_dia_text` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,6 +147,7 @@ CREATE TABLE `project_usecase` (
 
 LOCK TABLES `project_usecase` WRITE;
 /*!40000 ALTER TABLE `project_usecase` DISABLE KEYS */;
+INSERT INTO `project_usecase` VALUES (1,'uc 1',8,'@startuml\r\n:Hello world;\r\n:This is defined on\r\nseveral **lines**;\r\n@enduml\r\n','@startuml\r\nAlice -> Bob: Authentication Request\r\nBob --> Alice: Authentication Response\r\n\r\nAlice -> Bob: Another authentication Request\r\nAlice <-- Bob: Another authentication Response\r\n@enduml\r\n'),(2,'u1',16,'@startuml\r\n:Hello world;\r\n:This is defined on\r\nseveral **lines**;\r\n@enduml\r\n','@startuml\r\nAlice -> Bob: Authentication Request\r\nBob --> Alice: Authentication Response\r\n\r\nAlice -> Bob: Another authentication Request\r\nAlice <-- Bob: Another authentication Response\r\n@enduml\r\n');
 /*!40000 ALTER TABLE `project_usecase` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +166,7 @@ CREATE TABLE `project_wireframe` (
   `project_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,6 +175,7 @@ CREATE TABLE `project_wireframe` (
 
 LOCK TABLES `project_wireframe` WRITE;
 /*!40000 ALTER TABLE `project_wireframe` DISABLE KEYS */;
+INSERT INTO `project_wireframe` VALUES (1,'wf 1','@startsalt\r\n{\r\n Just example\r\n}\r\n@endsalt','@startuml\r\nleft to right direction\r\nactor example as ex\r\npackage examplePackage {\r\nusecase doExample as de\r\n}\r\nex --> de\r\n@enduml',9),(2,'wf 2','@startsalt\r\n{\r\n Just example\r\n}\r\n@endsalt','@startuml\r\nleft to right direction\r\nactor example as ex\r\npackage examplePackage {\r\nusecase doExample as de\r\n}\r\nex --> de\r\n@enduml',9),(5,'wf111','@startsalt\r\n{\r\n Just example\r\n}\r\n@endsalt','@startuml\r\nleft to right direction\r\nactor example as ex\r\npackage examplePackage {\r\nusecase doExample as de\r\n}\r\nex --> de\r\n@enduml',9),(6,'aaaaa','@startsalt\r\n{\r\n Just example\r\n}\r\n@endsalt','@startuml\r\nleft to right direction\r\nactor example as ex\r\npackage examplePackage {\r\nusecase doExample as de\r\n}\r\nex --> de\r\n@enduml',9),(8,'wf1','@startsalt\r\n{\r\n Just example\r\n}\r\n@endsalt','@startuml\r\nleft to right direction\r\nactor example as ex\r\npackage examplePackage {\r\nusecase doExample as de\r\n}\r\nex --> de\r\n@enduml',13),(16,'1','@startsalt\r\n{\r\n Just example\r\n}\r\n@endsalt','@startuml\r\nleft to right direction\r\nactor example as ex\r\npackage examplePackage {\r\nusecase doExample as de\r\n}\r\nex --> de\r\n@enduml',14);
 /*!40000 ALTER TABLE `project_wireframe` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -375,4 +379,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-21  5:10:37
+-- Dump completed on 2023-03-01  3:09:23

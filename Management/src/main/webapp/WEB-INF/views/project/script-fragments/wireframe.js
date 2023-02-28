@@ -15,27 +15,22 @@ function chooseWireframe() {
 	    				, options)
 	        .then((res) => res.json())
 	        .then((data) => {
-				changeUiChooseWireframe(data);
+				let wireframe = JSON.parse(data[0]);
+				let usecases = JSON.parse(data[1]);
+				current.wireframeChoosing = wireframe;
+				changeUiChooseWireframe(wireframe, usecases);
 			})
 	        .catch((error) => {console.error('Error:', error)});
 	 }
 }
-function changeUiChooseWireframe(data) {
-	let wireframe = JSON.parse(data[0]);
-	let usecases = JSON.parse(data[1]);
-	setWireframeSubTabUi(wireframe);
-	setUsecaseSubTabUi(wireframe);
-	setUsecaseTab(wireframe.name, usecases);
-	refreshSrcImgDia("wireframe");
-	refreshSrcImgDia("usecase");
+function changeUiChooseWireframe(wireframe, usecases) {
+	setContentWireframeTextarea(wireframe.wireframeDiaText);
+	setContentUsecaseTextarea(wireframe.usecaseDiaText);
+	setUsecaseTabContent(wireframe.name, usecases);
+	refreshDiaImg("wireframe");
+	refreshDiaImg("usecase");
 }
-function setWireframeSubTabUi(wireframe) {
-	document.querySelector("#wireframe-subtab-wf textarea").value = wireframe.wireframeDiaText;
-}
-function setUsecaseSubTabUi(wireframe) {
-	document.querySelector("#wireframe-subtab-uc textarea").value = wireframe.usecaseDiaText;
-}
-function setUsecaseTab(wireframeName, usecases) {
+function setUsecaseTabContent(wireframeName, usecases) {
 	document.querySelector("#usecase-content b").innerText = wireframeName;
 	let options = "<option value='default'>Choose Usecase</option>";
 	for (let i = 0; i < usecases.length; i++) {
@@ -153,8 +148,43 @@ function changeUiEditWireframe(oldName, newName) {
 }	
 
 function updateWireframeSubTab() {
+	let wireframeNameSelecting = document.querySelector("#wireframe-content select").value;
+	let wireframeDiaText = document.querySelector("#wireframe-subtab-wf textarea").value;
+	const options = {
+        method: 'POST',
+        headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},   
+        body: "action=UPDATE-WIREFRAME-DIA" 
+        			+ "&wireframe-name="+ wireframeNameSelecting
+        			+ "&wireframe-dia"+ wireframeDiaText
+        			+ "&project-name="+ current.projectChoosingData.name
+    }
+    fetch("/Management/project/", options)
+        .then((res) => refreshDiaImg("wireframe"))
+        .then((data) => console.log(data) )
+        .catch((error) => {console.error('Error:', error)});
 	
 }
+
 function updateUsecaseSubTab() {
-	
+	let wireframeNameSelecting = document.querySelector("#wireframe-content select").value;
+	let usecaseDiaText = document.querySelector("#wireframe-subtab-uc textarea").value;
+	const options = {
+        method: 'POST',
+        headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},   
+        body: "action=UPDATE-WIREFRAME-DIA" 
+        			+ "&wireframe-name="+ wireframeNameSelecting
+        			+ "&usecase-dia"+ usecaseDiaText
+        			+ "&project-name="+ current.projectChoosingData.name
+    }
+    fetch("/Management/project/", options)
+        .then((res) => changUiUpdateUsecaseDia())
+        .then((data) => console.log(data) )
+        .catch((error) => {console.error('Error:', error)});
+}
+function changUiUpdateUsecaseDia() {
+	refreshDiaImg("usecase");
 }

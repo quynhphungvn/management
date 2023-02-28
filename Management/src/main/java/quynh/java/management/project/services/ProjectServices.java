@@ -38,10 +38,10 @@ public class ProjectServices {
 	}
 	public Project getProject(String projectName) {		
 		Project project = projectDao.getByName(projectName);
-		if (project.getClassDiaText().length() > 0)
+		if (project != null) {
 			imageCreator.createDiagramPNG(project.getClassDiaText(), imageDiaRealPath + "class.png");
-		if (project.getErdDiaText().length() > 0)
 			imageCreator.createDiagramPNG(project.getErdDiaText(), imageDiaRealPath + "erd.png");
+		}
 		return project;
 	}
 	public void updateClassDiagram(String projectName, String classDiaText) {
@@ -54,20 +54,19 @@ public class ProjectServices {
 		project.setErdDiaText(classDiaText);
 		projectDao.update(project);	
 	}
-	public void testDiagram(String action, String diaText) {
+	public void testDiagram(String diaType, String diaText) {
 		System.out.println("dia: " + diaText);
-		if (action.equals("TEST-WIREFRAME")) {
+		if (diaType.equals("wireframe")) {
 			imageCreator.createDiagramPNG( diaText, imageDiaRealPath + "wireframe-test.png");
-		} else if (action.equals("TEST-USECASE")) {
+		} else if (diaType.equals("usecase")) {
 			imageCreator.createDiagramPNG( diaText, imageDiaRealPath + "usecase-test.png");
-		} else if (action.equals("TEST-ACTIVITY")) {
+		} else if (diaType.equals("activity")) {
 			imageCreator.createDiagramPNG( diaText, imageDiaRealPath + "activity-test.png");
-		} else if (action.equals("TEST-SEQUENCE")) {
+		} else if (diaType.equals("sequence")) {
 			imageCreator.createDiagramPNG( diaText, imageDiaRealPath + "sequence-test.png");
-		} else if (action.equals("TEST-CLASS")) {
+		} else if (diaType.equals("class")) {
 			imageCreator.createDiagramPNG( diaText, imageDiaRealPath + "class-test.png");
-			System.out.println("dia path: " + imageDiaRealPath +"class-test.png");
-		} else if (action.equals("TEST-ERD")) {
+		} else if (diaType.equals("erd")) {
 			imageCreator.createDiagramPNG( diaText, imageDiaRealPath + "erd-test.png");
 		} 					
 	}

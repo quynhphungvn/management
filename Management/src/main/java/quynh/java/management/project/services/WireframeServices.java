@@ -46,4 +46,17 @@ public class WireframeServices {
 		return wireframe;
 	}
 
+	public void updateWireframeDia(String wireframeName, String wireframeDiaText, String projectName) {
+		Project project = projectDao.getByName(projectName);
+		Wireframe wireframe = wireframeDao.getByName(wireframeName, project);
+		wireframe.setWireframeDiaText(wireframeDiaText);
+		imageCreator.createDiagramPNG(wireframe.getWireframeDiaText(), imageDiaRealPath + "wireframe.png");		
+	}
+	public void updateUsecaseDia(String wireframeName, String usecaseDiaText, String projectName) {
+		Project project = projectDao.getByName(projectName);
+		Wireframe wireframe = wireframeDao.getByName(wireframeName, project);
+		wireframe.setWireframeDiaText(usecaseDiaText);
+		imageCreator.createDiagramPNG(wireframe.getWireframeDiaText(), imageDiaRealPath + "usecase.png");		
+	}
+
 }

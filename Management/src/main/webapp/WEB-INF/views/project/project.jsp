@@ -137,9 +137,9 @@
 												<textarea rows="25" placeholder="wireframe text"></textarea>
 											</div>
 											<button type="reset">Clear</button>
-											<button type="button">Reset</button>
+											<button type="button" onclick="resetBackToOriginDia('wireframe')">Reset</button>
 											<div>
-												<button>Test</button>
+												<button type="button" onclick="testDia('wireframe')">Test</button>
 												<button type="button" onclick="updateWireframeSubTab()">Save</button>
 											</div>
 										</form>
@@ -152,11 +152,11 @@
 											</div>
 											<div>
 												<button type="reset">Clear</button>
-												<button type="button">Reset</button>
+												<button type="button" onclick="resetBackToOriginDia('usecase')">Reset</button>
 											</div>
 											
 											<div>
-												<button>Test</button>
+												<button type ="button" onclick="testDia('usecase')">Test</button>
 												<button type="button" onclick="updateUsecaseSubTab()">Save</button>
 											</div>
 										</form>
@@ -166,19 +166,22 @@
 							</div>	
 						</section>
                         <section id="usecase-content" class="diagram-panel">
-                        	<div>
-                        		<label>Wireframe:</label><b>None</b>
-                        	</div>
-                            <div>
-                                <select>
-                                	<option value="default">Choose Usecase</option>                                   
-                                </select>
-                                <span>
-                                	<button>+</button>
-                                	<button>-</button>
-                                	<button>Edit</button>
-                                </span>
-                            </div>
+                        	<form>
+	                        	<div>
+	                        		<label>Wireframe:</label><b>None</b>
+	                        	</div>
+	                            <div>
+	                                <select onchange="chooseUsecase()">
+	                                	<option value="default">Choose Usecase</option>                                   
+	                                </select>
+	                                <span>
+	                                	<button type="button" class="usecase-btn-add dialog-btn-open"
+											data-target="#dialog-add-usecase">+</button>
+	                                	<button>-</button>
+	                                	<button type="button" onclick="openDialogEditUsecaseName()">Edit</button>
+	                                </span>
+	                            </div>
+	   						</form>
                             <div id="usecase-subtab" class="tab">
                             	<header class="tab-controls">
                             		<button data-target="#usecase-subtab-act">Actitivy</button>
@@ -193,10 +196,10 @@
 	                            			</div>
 			                            	<div>
 			                                	<button >Clear</button>
-			                                	<button>Reset</button>
+			                                	<button type="button" onclick="resetBackToOriginDia('activity')">Reset</button>
 			                                </div>
 			                                <div>
-			                                    <button>Test</button>
+			                                    <button type="button" onclick="testDia('activity')">Test</button>
 			                                    <button>Save</button>
 			                                </div>
                             			</form>
@@ -209,10 +212,10 @@
 	                            			</div>
 			                            	<div>
 			                                	<button >Clear</button>
-			                                	<button>Reset</button>
+			                                	<button type="button" onclick="resetBackToOriginDia('sequence')">Reset</button>
 			                                </div>
 			                                <div>
-			                                    <button>Test</button>
+			                                    <button type="button" onclick="testDia('sequence')">Test</button>
 			                                    <button>Save</button>
 			                                </div>
                             			</form>
@@ -228,10 +231,10 @@
 	                        	</div>
 	                        	<div>
 	                        		<button type="reset">Clear</button>
-	                        		<button type="button" onclick="resetChangingClassDia()">Reset</button>
+	                        		<button type="button" onclick="resetBackToOriginDia('class')">Reset</button>
 	                        	</div>                  	
 	                            <div>
-	                                <button type="button" onclick="testClassDia()">Test</button>
+	                                <button type="button" onclick="testDia('class')">Test</button>
 	                                <button type="button" onclick="saveClassDia()">Save</button>
 	                            </div>
                         	</form>                        	                       
@@ -244,11 +247,11 @@
 	                        	</div>
 	                        	<div>
 	                        		<button type="reset">Clear</button>
-	                        		<button type="button" onclick="resetChangingErdDia()">Reset</button>
+	                        		<button type="button" onclick="resetBackToOriginDia('erd')">Reset</button>
 	                        	</div>
 	                        	
 	                            <div>
-	                                <button type="button" onclick="testErdDia()">Test</button>
+	                                <button type="button" onclick="testDia('erd')">Test</button>
 	                                <button type="button" onclick="saveErdDia()">Save</button>
 	                            </div>
                         	</form> 
@@ -312,15 +315,73 @@
                         </div>
                     </div>
                 </dialog>
+                <dialog id="dialog-add-usecase" class="dialog">
+                    <div class="dialog-container">
+                        <div class="dialog-content">
+                            <header>
+                                <h5>Dialog title</h5>
+                                <button class="dialog-btn-close" data-target="#dialog-add-usecase">X</button>
+                            </header>
+                            <hr/>
+                            <main>
+                                <form>
+                                	<div>
+                                		<label>Usecase</label>
+                                		<input type="text" placeholder="usecase" />
+                                	</div>
+                                	<div>
+                                		<button type="button" onclick="addUsecase(this)">Add</button>
+                                		<button type="reset">Clear</button>
+                                	</div>
+                                </form>                 
+                            </main>
+                            <hr/>
+                            <footer>
+        
+                            </footer>
+                        </div>
+                    </div>
+                </dialog>
+                <dialog id="dialog-edit-usecase" class="dialog">
+                    <div class="dialog-container">
+                        <div class="dialog-content">
+                            <header>
+                                <h5>Dialog title</h5>
+                                <button class="dialog-btn-close" data-target="#dialog-edit-usecase">X</button>
+                            </header>
+                            <hr/>
+                            <main>
+                                <form >
+                                	<div>
+                                		<label>Name</label>
+                                		<input name="old-name" type="text" disabled/>
+                                	</div>
+                                	<div>
+                                		<label>New name: </label>
+                                		<input name="new-name" type="text" />
+                                	</div>
+                                	<div>                               		
+                                		<button type="button" onclick="editUsecaseName()">Save</button>                        
+                               		</div>
+                                </form>            
+                            </main>
+                            <hr/>
+                            <footer>
+        
+                            </footer>
+                        </div>
+                    </div>
+                </dialog>
             </div>
+            
         </aside>
         <main id="dia-img">
             <div class="tab">
                 <header class="tab-controls">
                     <button data-target="#img-wireframe">wireframe</button>
                     <button data-target="#img-usecase">Usecase</button>
-                    <button data-target="#img-act">Act</button>
-                    <button data-target="#img-seq">Seq</button>
+                    <button data-target="#img-activity">Act</button>
+                    <button data-target="#img-sequence">Seq</button>
                     <button data-target="#img-class">Class</button>
                     <button data-target="#img-erd">ERD</button>
                 </header>
@@ -333,11 +394,11 @@
                         <img src="/Management/resources/project/images/usecase.png" />
                         <img src="/Management/resources/project/images/usecase-test.png" />
                     </section>
-                    <section id="img-act">
+                    <section id="img-activity">
                         <img src="/Management/resources/project/images/activity.png" />
                         <img src="/Management/resources/project/images/activity-test.png" />
                     </section>
-                    <section id="img-seq">
+                    <section id="img-sequence">
                         <img src="/Management/resources/project/images/sequence.png" />
                         <img src="/Management/resources/project/images/sequence-test.png" />
                     </section>
@@ -354,8 +415,11 @@
         </main>
     </main>
     <script src="/Management/resources/common/js/scripts.js"></script>
+    <%-- <script><%@include file="/WEB-INF/views/project/script-fragments/utils-query.js"%></script> --%>
+    <script><%@include file="/WEB-INF/views/project/script-fragments/utils-function.js"%></script>
     <script><%@include file="/WEB-INF/views/project/script-fragments/project.js"%></script>
     <script><%@include file="/WEB-INF/views/project/script-fragments/wireframe.js"%></script>
+    <script><%@include file="/WEB-INF/views/project/script-fragments/usecase.js"%></script>
 </body>
 
 </html>
