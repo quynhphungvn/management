@@ -1,3 +1,111 @@
+<div id="usecase-content" class="tab-contents">
+	<form>
+		<div>
+			<label>Wireframe:</label><b>None</b>
+		</div>
+		<div>
+			<select onchange="chooseUsecase()">
+				<option value="default">Choose Usecase</option>
+			</select> <span>
+				<button type="button" class="usecase-btn-add dialog-btn-open"
+					data-target="#dialog-add-usecase">+</button>
+				<button>-</button>
+				<button type="button" onclick="openDialogEditUsecaseName()">Edit</button>
+			</span>
+		</div>
+	</form>
+	<div id="usecase-subtab" class="tab">
+		<header class="tab-controls">
+			<button data-target="#usecase-subtab-act">Actitivy</button>
+			<button data-target="#usecase-subtab-seq">Sequence</button>
+		</header>
+		<main class="tab-contents">
+			<section id="usecase-subtab-act" class="tab-content">
+				<form>
+					<div>
+						<label for="">text</label>
+						<textarea name="activity" rows="25" placeholder="activity"></textarea>
+					</div>
+					<div>
+						<button>Clear</button>
+						<button type="button" onclick="resetBackToOriginDia('activity')">Reset</button>
+					</div>
+					<div>
+						<button type="button" onclick="testDia('activity')">Test</button>
+						<button>Save</button>
+					</div>
+				</form>
+			</section>
+			<section id="usecase-subtab-seq">
+				<form>
+					<div>
+						<label for="">text</label>
+						<textarea name="sequence" rows="25" placeholder="sequence"></textarea>
+					</div>
+					<div>
+						<button>Clear</button>
+						<button type="button" onclick="resetBackToOriginDia('sequence')">Reset</button>
+					</div>
+					<div>
+						<button type="button" onclick="testDia('sequence')">Test</button>
+						<button>Save</button>
+					</div>
+				</form>
+			</section>
+		</main>
+	</div>
+	<dialog id="dialog-add-usecase" class="dialog">
+	<div class="dialog-container">
+		<div class="dialog-content">
+			<header>
+				<h5>Dialog title</h5>
+				<button class="dialog-btn-close" data-target="#dialog-add-usecase">X</button>
+			</header>
+			<hr />
+			<main>
+				<form>
+					<div>
+						<label>Usecase</label> <input type="text" placeholder="usecase" />
+					</div>
+					<div>
+						<button type="button" onclick="addUsecase(this)">Add</button>
+						<button type="reset">Clear</button>
+					</div>
+				</form>
+			</main>
+			<hr />
+			<footer> </footer>
+		</div>
+	</div>
+	</dialog>
+	<dialog id="dialog-edit-usecase" class="dialog">
+	<div class="dialog-container">
+		<div class="dialog-content">
+			<header>
+				<h5>Dialog title</h5>
+				<button class="dialog-btn-close" data-target="#dialog-edit-usecase">X</button>
+			</header>
+			<hr />
+			<main>
+				<form>
+					<div>
+						<label>Name</label> <input name="old-name" type="text" disabled />
+					</div>
+					<div>
+						<label>New name: </label> <input name="new-name" type="text" />
+					</div>
+					<div>
+						<button type="button" onclick="editUsecaseName()">Save</button>
+					</div>
+				</form>
+			</main>
+			<hr />
+			<footer> </footer>
+		</div>
+	</div>
+	</dialog>
+</div>
+<script>
 function chooseUsecase() {
 	let usecaseName = document.querySelector("#usecase-content select").value;
 	console.log(usecaseName);
@@ -190,3 +298,4 @@ function updateUsecaseSubTab() {
 function changUiUpdateSequenceDia() {
 	refreshDiaImg("sequence");
 }
+</script>

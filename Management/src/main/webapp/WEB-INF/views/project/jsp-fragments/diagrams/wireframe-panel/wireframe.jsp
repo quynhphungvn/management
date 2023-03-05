@@ -1,3 +1,159 @@
+<div id="wireframe-content" class="diagram-panel">
+	<form>
+		<select onchange="chooseWireframe()">
+			<option value="default">Choose Wireframe</option>
+		</select> <span>
+			<button type="button" class="wireframe-btn-add dialog-btn-open"
+				data-target="#dialog-add-wireframe">+</button>
+			<button type="button" onclick="deleteWireframe()">-</button>
+			<button type="button" onclick="openDialogEditWireframeName()">edit</button>
+		</span>
+	</form>
+	<div id="wireframe-subtab" class="tab">
+		<header class="tab-controls">
+			<button data-target="#wireframe-subtab-wf">Wireframe</button>
+			<button data-target="#wireframe-subtab-uc">Usecase</button>
+		</header>
+		<main class="tab-contents">
+			<section id="wireframe-subtab-wf">
+				<form>
+					<div>
+						<label for="">text</label>
+						<textarea name="wireframe" rows="25" placeholder="wireframe text"></textarea>
+					</div>
+					<button type="reset">Clear</button>
+					<button type="button" onclick="resetBackToOriginDia('wireframe')">Reset</button>
+					<div>
+						<button type="button" onclick="testDia('wireframe')">Test</button>
+						<button type="button" onclick="updateWireframeSubTab()">Save</button>
+					</div>
+				</form>
+			</section>
+			<section id="wireframe-subtab-uc">
+				<form>
+					<div>
+						<label for="">text</label>
+						<textarea name="usecase" rows="25" placeholder="usecase text"></textarea>
+					</div>
+					<div>
+						<button type="reset">Clear</button>
+						<button type="button" onclick="resetBackToOriginDia('usecase')">Reset</button>
+					</div>
+
+					<div>
+						<button type="button" onclick="testDia('usecase')">Test</button>
+						<button type="button" onclick="updateUsecaseSubTab()">Save</button>
+					</div>
+				</form>
+			</section>
+		</main>
+	</div>
+	<dialog id="dialog-add-wireframe" class="dialog">
+	<div class="dialog-container">
+		<div class="dialog-content">
+			<header>
+				<h5>Dialog title</h5>
+				<button class="dialog-btn-close" data-target="#dialog-add-wireframe">X</button>
+			</header>
+			<hr />
+			<main>
+				<form>
+					<div>
+						<label>Wireframe</label> <input type="text"
+							placeholder="wireframe" />
+					</div>
+					<div>
+						<button type="button" onclick="addWireframe(this)">Add</button>
+						<button type="reset">Clear</button>
+					</div>
+				</form>
+			</main>
+			<hr />
+			<footer> </footer>
+		</div>
+	</div>
+	</dialog>
+	<dialog id="dialog-edit-wireframe" class="dialog">
+	<div class="dialog-container">
+		<div class="dialog-content">
+			<header>
+				<h5>Dialog title</h5>
+				<button class="dialog-btn-close"
+					data-target="#dialog-edit-wireframe">X</button>
+			</header>
+			<hr />
+			<main>
+				<form>
+					<div>
+						<label>Name</label> <input name="old-name" type="text" disabled />
+					</div>
+					<div>
+						<label>New name: </label> <input name="new-name" type="text" />
+					</div>
+					<div>
+						<button type="button" onclick="editWireframeName()">Save</button>
+					</div>
+				</form>
+			</main>
+			<hr />
+			<footer> </footer>
+		</div>
+	</div>
+	</dialog>
+	<dialog id="dialog-add-wireframe" class="dialog">
+	<div class="dialog-container">
+		<div class="dialog-content">
+			<header>
+				<h5>Dialog title</h5>
+				<button class="dialog-btn-close" data-target="#dialog-add-wireframe">X</button>
+			</header>
+			<hr />
+			<main>
+				<form>
+					<div>
+						<label>Wireframe</label> <input type="text"
+							placeholder="wireframe" />
+					</div>
+					<div>
+						<button type="button" onclick="addWireframe(this)">Add</button>
+						<button type="reset">Clear</button>
+					</div>
+				</form>
+			</main>
+			<hr />
+			<footer> </footer>
+		</div>
+	</div>
+	</dialog>
+	<dialog id="dialog-edit-wireframe" class="dialog">
+	<div class="dialog-container">
+		<div class="dialog-content">
+			<header>
+				<h5>Dialog title</h5>
+				<button class="dialog-btn-close"
+					data-target="#dialog-edit-wireframe">X</button>
+			</header>
+			<hr />
+			<main>
+				<form>
+					<div>
+						<label>Name</label> <input name="old-name" type="text" disabled />
+					</div>
+					<div>
+						<label>New name: </label> <input name="new-name" type="text" />
+					</div>
+					<div>
+						<button type="button" onclick="editWireframeName()">Save</button>
+					</div>
+				</form>
+			</main>
+			<hr />
+			<footer> </footer>
+		</div>
+	</div>
+	</dialog>
+</div>
+<script>
 function chooseWireframe() {
 	let wireframeName = document.querySelector("#wireframe-content select").value;
 	console.log(wireframeName);
@@ -188,3 +344,4 @@ function updateUsecaseSubTab() {
 function changUiUpdateUsecaseDia() {
 	refreshDiaImg("usecase");
 }
+</script>

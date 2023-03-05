@@ -26,7 +26,9 @@ public class Project implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "project")
+	@Column(name="mindmap_dia_text")
+	private String mindmapDiaText;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "project", orphanRemoval = true)
 	private List<Wireframe> wireframes;
 	@Column(name="class_dia_text")
 	private String classDiaText;

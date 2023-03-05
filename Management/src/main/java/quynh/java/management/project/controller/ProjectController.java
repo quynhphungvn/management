@@ -109,7 +109,7 @@ public class ProjectController extends HttpServlet {
 	private void returnProjectHomePage(HttpServletRequest request, HttpServletResponse response) {
 		List<Project> projects = projectServices.getAllProject();
 		request.setAttribute("projects", projects);
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/project/project.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/project/index.jsp");
 		try {
 			rd.forward(request, response);
 		} catch (ServletException e) {
@@ -156,6 +156,11 @@ public class ProjectController extends HttpServlet {
 			String projectName = request.getParameter("project-name");
 			String erdDiaText = request.getParameter("dia");
 			projectServices.updateErdDiagram(projectName, erdDiaText);
+		} 
+		else if (action.equals("UPDATE-MINDMAP")) {
+			String projectName = request.getParameter("project-name");
+			String erdDiaText = request.getParameter("dia");
+			projectServices.updateMindmapDiagram(projectName, erdDiaText);
 		} 
 		else if (action.contains("TEST")) {
 			String diaType = request.getParameter("dia-type");

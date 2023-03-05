@@ -14,6 +14,7 @@ public class ProjectCreateTable {
 			String sqlProject = "create table if not exists project ("
 					+ " id int not null auto_increment,"
 					+ "	name varchar(100) not null unique,"
+					+ " mindmap_dia_text text,"
 					+ " class_dia_text text,"
 					+ " erd_dia_text text,"
 					+ " primary key (id))";

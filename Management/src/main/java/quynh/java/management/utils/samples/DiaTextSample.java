@@ -45,4 +45,12 @@ public class DiaTextSample {
 			+ "Entity07 |o--|| Entity08\r\n"
 			+ "@enduml\r\n"
 			+ "";
+	public static String mindmapInitSample = "@startmindmap\r\n"
+			+ "* root node\r\n"
+			+ "	* some first level node\r\n"
+			+ "		* second level node\r\n"
+			+ "		* another second level node\r\n"
+			+ "	* another first level node\r\n"
+			+ "@endmindmap\r\n"
+			+ "";
 }

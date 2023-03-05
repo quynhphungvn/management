@@ -34,6 +34,6 @@ public class Wireframe implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "project_id")
 	private Project project;
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "wireframe")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "wireframe", orphanRemoval = true)
 	private Set<Usecase> usecases;
 }

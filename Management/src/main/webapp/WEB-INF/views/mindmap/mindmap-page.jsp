@@ -15,7 +15,6 @@
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="/Management/resources/mindmap/css/styles.css">
-<style><%@include file="/WEB-INF/views/common/leftbar-fragment/leftbar.css"%></style>
 </head>
 
 <body>
