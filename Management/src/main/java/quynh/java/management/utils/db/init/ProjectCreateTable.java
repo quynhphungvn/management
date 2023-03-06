@@ -36,7 +36,15 @@ public class ProjectCreateTable {
 					+ "usecase_dia_text text,"
 					+ "project_id int not null,"
 					+ "primary key (id))";
-			this.createTable(sqlWireframe, conn);					
+			this.createTable(sqlWireframe, conn);	
+			
+			String sqlMindmap = "create table if not exists project_mindmap("
+					+ "id int not null auto_increment,"	
+					+ "name varchar(100) not null unique,"
+					+ "mindmap_dia_text text,"				
+					+ "project_id int not null,"
+					+ "primary key (id))";
+			this.createTable(sqlMindmap, conn);
 						
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block

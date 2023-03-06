@@ -21,7 +21,7 @@ function changeUiForTestDia(type) {
 function resetBackToOriginDia(diaType) {
 	switch(diaType) {
 		case "mindmap": {
-			let mindmapDiaText = current.projectChoosingData.mindmapDiaText;
+			let mindmapDiaText = current.mindmapChoosing.mindmapDiaText;
 			document.querySelector("textarea[name='mindmap']").value = mindmapDiaText;
 			showImgDia("mindmap");
 			break;
@@ -68,37 +68,37 @@ function resetBackToOriginDia(diaType) {
 function testDia(type) {
 	switch(type) {
 		case "mindmap": {
-			let dia = document.querySelector("textarea[name='mindmap']");
+			let dia = document.querySelector("textarea[name='mindmap']").value;
 			sendTestRequest(type, dia);
 			break;
 		}
 		case "class": {
-			let dia = document.querySelector("textarea[name='class']");
+			let dia = document.querySelector("textarea[name='class']").value;
 			sendTestRequest(type, dia);
 			break;
 		}
 		case "erd": {
-			let dia = document.querySelector("textarea[name='erd']");
+			let dia = document.querySelector("textarea[name='erd']").value;
 			sendTestRequest(type, dia);
 			break;
 		} 
 		case "wireframe": {
-			let dia = document.querySelector("textarea[name='wireframe']");
+			let dia = document.querySelector("textarea[name='wireframe']").value;
 			sendTestRequest(type, dia);
 			break;
 		}
 		case "usecase": {
-			let dia = document.querySelector("textarea[name='usecase']");
+			let dia = document.querySelector("textarea[name='usecase']").value;
 			sendTestRequest(type, dia);
 			break;
 		}
 		case "activity": {
-			let dia = document.querySelector("textarea[name='activity']");
+			let dia = document.querySelector("textarea[name='activity']").value;
 			sendTestRequest(type, dia);
 			break;
 		}
 		case "sequence": {
-			let dia = document.querySelector("textarea[name='sequence']");
+			let dia = document.querySelector("textarea[name='sequence']").value;
 			sendTestRequest(type, dia);
 			break;
 		}

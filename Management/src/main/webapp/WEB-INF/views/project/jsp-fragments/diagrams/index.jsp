@@ -16,23 +16,23 @@
 		<main class="tab-contents">
 			<section id="mindmap-tabcontent" class="diagram-panel">
 				<%@include
-					file="/WEB-INF/views/project/jsp-fragments/diagrams/mindmap-panel/mindmap.jsp"%>
+					file="/WEB-INF/views/project/jsp-fragments/diagrams/mindmap/index.jsp"%>
 			</section>
 			<section id="wireframe-tabcontent" class="diagram-panel">
 				<%@include
-					file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe-panel/wireframe.jsp"%>
+					file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe/index.jsp"%>
 			</section>
 			<section id="usecase-tabcontent" class="tab-contents">
 				<%@include
-					file="/WEB-INF/views/project/jsp-fragments/diagrams/usecase-panel/usecase.jsp"%>
+					file="/WEB-INF/views/project/jsp-fragments/diagrams/usecase/index.jsp"%>
 			</section>
 			<section id="class-tabcontent" class="diagram-src">
 				<%@include
-					file="/WEB-INF/views/project/jsp-fragments/diagrams/class-panel/class.jsp"%>
+					file="/WEB-INF/views/project/jsp-fragments/diagrams/class/index.jsp"%>
 			</section>
 			<section id="erd-tabcontent" class="diagram-src">
 				<%@include
-					file="/WEB-INF/views/project/jsp-fragments/diagrams/erd-panel/erd.jsp"%>
+					file="/WEB-INF/views/project/jsp-fragments/diagrams/erd/index.jsp"%>
 			</section>
 		</main>
 	</div>

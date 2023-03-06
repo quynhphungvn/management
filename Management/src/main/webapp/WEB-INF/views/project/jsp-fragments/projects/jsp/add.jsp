@@ -1,3 +1,26 @@
+<dialog id="dialog-add-project" class="dialog">
+	<div class="dialog-container">
+		<div class="dialog-content">
+			<header>
+				<h5>Add Project</h5>
+				<button class="dialog-btn-close" data-target="#dialog-add-project">X</button>
+			</header>
+			<hr />
+			<main>
+				<form action="" name="project-add">
+					<div>
+						<label>Project name</label> <input type="text">
+					</div>
+					<div>
+						<button type="button" onclick="addProject()">Add</button>
+						<button type="reset">Clear</button>
+					</div>
+				</form>
+			</main>
+		</div>
+	</div>
+	</dialog>
+<script>
 function addProject() {
 	    let projectName = document.querySelector("form[name='project-add'] input").value;
 	    sendRequestAddNewProject(projectName);
@@ -27,3 +50,4 @@ function addProject() {
 	    listProjectEl.innerHTML = listProjectEl.innerHTML += liEl;
 	    document.querySelector("#dialog-add-project").close();
 	}
+</script>

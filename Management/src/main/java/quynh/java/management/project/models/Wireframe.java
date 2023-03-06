@@ -31,7 +31,7 @@ public class Wireframe implements Serializable {
 	private String wireframeDiaText;
 	@Column(name = "usecase_dia_text")
 	private String usecaseDiaText;
-	@ManyToOne
+	@ManyToOne 
 	@JoinColumn(name = "project_id")
 	private Project project;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "wireframe", orphanRemoval = true)

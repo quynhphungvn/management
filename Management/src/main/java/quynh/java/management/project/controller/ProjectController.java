@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import quynh.java.management.project.models.Mindmap;
 import quynh.java.management.project.models.Project;
 import quynh.java.management.project.models.Usecase;
 import quynh.java.management.project.models.Wireframe;
+import quynh.java.management.project.services.MindmapServices;
 import quynh.java.management.project.services.ProjectServices;
 import quynh.java.management.project.services.UsecaseServices;
 import quynh.java.management.project.services.WireframeServices;
@@ -31,6 +33,7 @@ public class ProjectController extends HttpServlet {
     private ProjectServices projectServices = new ProjectServices();
     private WireframeServices wireframeServices = new WireframeServices();
     private UsecaseServices usecaseServices = new UsecaseServices();
+    private MindmapServices mindmapServices = new MindmapServices();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -50,6 +53,7 @@ public class ProjectController extends HttpServlet {
         projectServices.setImageDiaRealPath(imgPathFolder);
         wireframeServices.setImageDiaRealPath(imgPathFolder);
         usecaseServices.setImageDiaRealPath(imgPathFolder);
+        mindmapServices.setImageDiaRealPath(imgPathFolder);
 		String action = request.getParameter("action");
 		if (action == null) {
 			returnProjectHomePage(request, response);
@@ -57,14 +61,18 @@ public class ProjectController extends HttpServlet {
 			String projectName = request.getParameter("project-name");
 			Project project = projectServices.getProject(projectName);
 			List<Wireframe> wireframes = project.getWireframes();
+			List<Mindmap> mindmaps = project.getMindmaps(); 
 			for (Wireframe wf : wireframes) 
 				wf.setUsecases(null);
 			project.setWireframes(null);
+			project.setMindmaps(null);
 			String projectJson = gson.toJson(project);
 			String wireframeJson = gson.toJson(wireframes);
+			String mindmapJson = gson.toJson(mindmaps);
 			List<String> jsonResponseList = new ArrayList<String>();
-			jsonResponseList.add(projectJson);
-			jsonResponseList.add(wireframeJson);			
+			jsonResponseList.add(projectJson);	
+			jsonResponseList.add(wireframeJson);
+			jsonResponseList.add(mindmapJson);
 			try {
 				String json = gson.toJson(jsonResponseList);
 				response.getOutputStream().print(json);
@@ -104,6 +112,21 @@ public class ProjectController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if (action.equals("GET-MINDMAP")) {
+			String projectName = request.getParameter("project-name");
+			String mindmapName = request.getParameter("mindmap-name");
+			Mindmap mindmap = mindmapServices.getMindmap(mindmapName, projectName);
+			String mindmapJson = "{}";
+			if (mindmap != null) {
+				mindmap.setProject(null);
+				mindmapJson = gson.toJson(mindmap);			
+			}
+			try {
+					response.getOutputStream().print(mindmapJson);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 	private void returnProjectHomePage(HttpServletRequest request, HttpServletResponse response) {
@@ -130,6 +153,7 @@ public class ProjectController extends HttpServlet {
         projectServices.setImageDiaRealPath(imgPathFolder);
         wireframeServices.setImageDiaRealPath(imgPathFolder);
         usecaseServices.setImageDiaRealPath(imgPathFolder);
+        mindmapServices.setImageDiaRealPath(imgPathFolder);
 		String action = request.getParameter("action");
 		if (action == null) {
 			System.out.println("action is null! and name:" + request.getParameter("projectName"));
@@ -157,11 +181,28 @@ public class ProjectController extends HttpServlet {
 			String erdDiaText = request.getParameter("dia");
 			projectServices.updateErdDiagram(projectName, erdDiaText);
 		} 
-		else if (action.equals("UPDATE-MINDMAP")) {
+		else if (action.equals("ADD-MINDMAP")) {
+			String mindmapName = request.getParameter("mindmap-name");
 			String projectName = request.getParameter("project-name");
-			String erdDiaText = request.getParameter("dia");
-			projectServices.updateMindmapDiagram(projectName, erdDiaText);
+			mindmapServices.addMindmap(mindmapName, projectName);
 		} 
+		else if (action.equals("DELETE-MINDMAP")) {
+			String mindmapName = request.getParameter("mindmap-name");
+			String projectName = request.getParameter("project-name");
+			mindmapServices.deleteMindmap(mindmapName, projectName);
+		} 
+		else if (action.equals("EDIT-MINDMAP-NAME")) {
+			String mindmapName = request.getParameter("mindmap-name");
+			String mindmapNewName = request.getParameter("mindmap-newname");
+			String projectName = request.getParameter("project-name");
+			mindmapServices.editMindmapName(mindmapName, mindmapNewName, projectName);
+		}
+		else if (action.equals("SAVE-MINDMAP-DIA")) {
+			String projectName = request.getParameter("project-name");
+			String mindmapName = request.getParameter("mindmap-name");
+			String mindmapDiaText = request.getParameter("dia");
+			mindmapServices.updateMindmapDiagram(mindmapName, mindmapDiaText, projectName);
+		}
 		else if (action.contains("TEST")) {
 			String diaType = request.getParameter("dia-type");
 			String diaText = request.getParameter("dia");

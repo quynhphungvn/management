@@ -53,7 +53,7 @@
  </div>
  <script>
  	function refreshDiaImg(name) {
-		let imgEl = document.querySelector("#img-"+name +" img");
+		let imgEl = document.querySelector("#img-" + name +" img");
 		imgEl.src = "/Management/resources/project/images/"+ name + ".png?" + new Date().getTime();
 	}
 	function refreshDiaImgTest(name) {

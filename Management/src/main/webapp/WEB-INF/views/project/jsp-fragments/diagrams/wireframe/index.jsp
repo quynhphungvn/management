@@ -1,4 +1,4 @@
-<div id="wireframe-content" class="diagram-panel">
+<div id="wireframe-content">
 	<form>
 		<select onchange="chooseWireframe()">
 			<option value="default">Choose Wireframe</option>
@@ -48,110 +48,8 @@
 			</section>
 		</main>
 	</div>
-	<dialog id="dialog-add-wireframe" class="dialog">
-	<div class="dialog-container">
-		<div class="dialog-content">
-			<header>
-				<h5>Dialog title</h5>
-				<button class="dialog-btn-close" data-target="#dialog-add-wireframe">X</button>
-			</header>
-			<hr />
-			<main>
-				<form>
-					<div>
-						<label>Wireframe</label> <input type="text"
-							placeholder="wireframe" />
-					</div>
-					<div>
-						<button type="button" onclick="addWireframe(this)">Add</button>
-						<button type="reset">Clear</button>
-					</div>
-				</form>
-			</main>
-			<hr />
-			<footer> </footer>
-		</div>
-	</div>
-	</dialog>
-	<dialog id="dialog-edit-wireframe" class="dialog">
-	<div class="dialog-container">
-		<div class="dialog-content">
-			<header>
-				<h5>Dialog title</h5>
-				<button class="dialog-btn-close"
-					data-target="#dialog-edit-wireframe">X</button>
-			</header>
-			<hr />
-			<main>
-				<form>
-					<div>
-						<label>Name</label> <input name="old-name" type="text" disabled />
-					</div>
-					<div>
-						<label>New name: </label> <input name="new-name" type="text" />
-					</div>
-					<div>
-						<button type="button" onclick="editWireframeName()">Save</button>
-					</div>
-				</form>
-			</main>
-			<hr />
-			<footer> </footer>
-		</div>
-	</div>
-	</dialog>
-	<dialog id="dialog-add-wireframe" class="dialog">
-	<div class="dialog-container">
-		<div class="dialog-content">
-			<header>
-				<h5>Dialog title</h5>
-				<button class="dialog-btn-close" data-target="#dialog-add-wireframe">X</button>
-			</header>
-			<hr />
-			<main>
-				<form>
-					<div>
-						<label>Wireframe</label> <input type="text"
-							placeholder="wireframe" />
-					</div>
-					<div>
-						<button type="button" onclick="addWireframe(this)">Add</button>
-						<button type="reset">Clear</button>
-					</div>
-				</form>
-			</main>
-			<hr />
-			<footer> </footer>
-		</div>
-	</div>
-	</dialog>
-	<dialog id="dialog-edit-wireframe" class="dialog">
-	<div class="dialog-container">
-		<div class="dialog-content">
-			<header>
-				<h5>Dialog title</h5>
-				<button class="dialog-btn-close"
-					data-target="#dialog-edit-wireframe">X</button>
-			</header>
-			<hr />
-			<main>
-				<form>
-					<div>
-						<label>Name</label> <input name="old-name" type="text" disabled />
-					</div>
-					<div>
-						<label>New name: </label> <input name="new-name" type="text" />
-					</div>
-					<div>
-						<button type="button" onclick="editWireframeName()">Save</button>
-					</div>
-				</form>
-			</main>
-			<hr />
-			<footer> </footer>
-		</div>
-	</div>
-	</dialog>
+	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe/dialog-add.jsp"%>
+	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe/dialog-edit.jsp"%>	
 </div>
 <script>
 function chooseWireframe() {
@@ -195,34 +93,7 @@ function setUsecaseTabContent(wireframeName, usecases) {
 	}
 	document.querySelector("#usecase-content select").innerHTML = options; 
 }
-function addWireframe() {
-	let wireframeName = document.querySelector("#dialog-add-wireframe form input").value;
-	if (wireframeName && current.projectChoosingData.name) {
-	const options = {
-        method: 'POST',
-        headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},   
-        body: "action=ADD-WIREFRAME" 
-        			+ "&wireframe-name="+ wireframeName
-        			+ "&project-name="+ current.projectChoosingData.name
-    }
-    fetch("/Management/project/", options)
-        .then((res) => changeUiAddNewWireframe(wireframeName))
-        .then((data) => console.log(data))
-        .catch((error) => {console.error('Error:', error)});
-    } else {
-		alert("Check input or select project please!");
-	}
-}
-function changeUiAddNewWireframe(wireframeName) {
-	let wireframeSelectEl = document.querySelector("#wireframe-content form select");
-	let optionEl = document.createElement("option");
-	optionEl.innerText = wireframeName;
-	optionEl.setAttribute("value", wireframeName);
-	wireframeSelectEl.appendChild(optionEl);
-	document.querySelector("#dialog-add-wireframe").close();
-}
+
 function deleteWireframe() {
 	let wireframeName = document.querySelector("#wireframe-content select").value;
 	if (wireframeName != "default") {
@@ -263,46 +134,7 @@ function openDialogEditWireframeName() {
 	let dialog = document.querySelector("#dialog-edit-wireframe");
 	dialog.show();
 }
-function editWireframeName() {
-	console.log("abc");
-	let oldName = document.querySelector("#wireframe-content select").value;
-	if (oldName != "default") {
-		let newName = document.querySelector("#dialog-edit-wireframe input[name='new-name']").value;
-		console.log(oldName + ":" + newName)
-		if (oldName && newName && (oldName != newName)) {
-			
-			sendRequestEditWireframeName(oldName, newName);
-		} else {
-			alert("Please check your input!");
-			document.querySelector("#dialog-edit-wireframe").close();
-		}
-	}
-}
-
-function sendRequestEditWireframeName(oldName, newName) {
-	const options = {
-        method: 'POST',
-        headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},   
-        body: "action=EDIT-WIREFRAME-NAME" 
-        			+ "&wireframe-name="+ oldName
-        			+ "&wireframe-newname="+ newName
-        			+ "&project-name="+ current.projectChoosingData.name
-    }
-    fetch("/Management/project/", options)
-        .then((res) =>  changeUiEditWireframe(oldName, newName))
-        .then((data) => console.log(data) )
-        .catch((error) => {console.error('Error:', error)});
-}
-function changeUiEditWireframe(oldName, newName) {
-	let optionEl = document.querySelector("#wireframe-content option[value='"+ oldName + "']");
-	optionEl.innerText = newName;
-	optionEl.setAttribute("value", newName);
-	document.querySelector("#dialog-edit-wireframe").close();
-	document.querySelector("#usecase-content b").innerText = newName;
-}	
-
+	
 function updateWireframeSubTab() {
 	let wireframeNameSelecting = document.querySelector("#wireframe-content select").value;
 	let wireframeDiaText = document.querySelector("#wireframe-subtab-wf textarea").value;
@@ -337,11 +169,11 @@ function updateUsecaseSubTab() {
         			+ "&project-name="+ current.projectChoosingData.name
     }
     fetch("/Management/project/", options)
-        .then((res) => changUiUpdateUsecaseDia())
+        .then((res) => {
+        	refreshDiaImg("usecase");
+        })
         .then((data) => console.log(data) )
         .catch((error) => {console.error('Error:', error)});
 }
-function changUiUpdateUsecaseDia() {
-	refreshDiaImg("usecase");
-}
+
 </script>

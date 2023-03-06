@@ -46,14 +46,14 @@
         </div>
         <aside id="aside">
         	<div id="project-container">
-        		<%@include file="/WEB-INF/views/project/jsp-fragments/projects/projects.jsp"%>
+        		<%@include file="/WEB-INF/views/project/jsp-fragments/projects/index.jsp"%>
         	</div>          
             <div id="project-diagram-container">
             	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/index.jsp"%>
             </div>    
         </aside>
         <main id="dia-img-container">
-            <%@include file="/WEB-INF/views/project/jsp-fragments/diagram-images/diagram-images.jsp"%>
+            <%@include file="/WEB-INF/views/project/jsp-fragments/diagram-images/index.jsp"%>
         </main>
     </main>
     <script src="/Management/resources/common/js/scripts.js"></script>

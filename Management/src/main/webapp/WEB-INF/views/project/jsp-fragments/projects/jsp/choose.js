@@ -16,20 +16,21 @@ function chooseProject(projectItemEl) {
 				console.log(data);
 				let project = JSON.parse(data[0]);
 				let wireframes = JSON.parse(data[1]);
+				let mindmaps = JSON.parse(data[2]);
 				console.log(wireframes);
 				current.projectChoosingData = project;
-				changeUiChooseProject(project, wireframes);
-				
+				changeUiChooseProject(project, wireframes, mindmaps);
 				/*setSrcTab(data.project);
 				setImageTab();
 				activeProjectItemUi();*/
 			})
 	        .catch((error) => {console.error('Error:', error)});
 	}
-	function changeUiChooseProject(project, wireframes) {
+	function changeUiChooseProject(project, wireframes, mindmaps) {
 		setWireframeUi(wireframes);
 		setInterfaceProjectDiagram(project);
 		setActiveProjectUi(project);
+		setMindmapUi(mindmaps);
 		refreshDiaProject();
 	}
 	function setWireframeUi(wireframes) {
@@ -41,10 +42,18 @@ function chooseProject(projectItemEl) {
 		}
 		selectEl.innerHTML = optionText;	
 	}
+	function setMindmapUi(mindmaps) {
+		let selectEl = document.querySelector("#mindmap-content form select");
+		let optionText = "<option value='default'>Choose Mindmap</option>";
+		for (let i = 0; i < mindmaps.length; i++) {
+			let optionEl = "<option value='"+ mindmaps[i].name +"'>" + mindmaps[i].name + "</option>";
+			optionText += optionEl;
+		}
+		selectEl.innerHTML = optionText;	
+	}
 	function setInterfaceProjectDiagram(project) {
 		document.querySelector('#class-content textarea').value = project.classDiaText;
 		document.querySelector('#erd-content textarea').value = project.erdDiaText;
-		document.querySelector('#mindmap-content textarea').value = project.mindmapDiaText;
 	}
 	function setActiveProjectUi() {
 		let projectItems = document.querySelector("#project ul")

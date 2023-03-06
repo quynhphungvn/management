@@ -18,7 +18,6 @@ public class ProjectServices {
 	public void addNewProject(String projectName) {
 		Project project = new Project();
 		project.setName(projectName);
-		project.setMindmapDiaText(DiaTextSample.mindmapInitSample);
 		project.setClassDiaText(DiaTextSample.classInitSample);
 		project.setErdDiaText(DiaTextSample.erdInitSample);
 		projectDao.add(project);
@@ -40,7 +39,6 @@ public class ProjectServices {
 	public Project getProject(String projectName) {		
 		Project project = projectDao.getByName(projectName);
 		if (project != null) {
-			imageCreator.createDiagramPNG(project.getMindmapDiaText(), imageDiaRealPath + "mindmap.png");
 			imageCreator.createDiagramPNG(project.getClassDiaText(), imageDiaRealPath + "class.png");
 			imageCreator.createDiagramPNG(project.getErdDiaText(), imageDiaRealPath + "erd.png");
 		}
@@ -72,11 +70,5 @@ public class ProjectServices {
 		} else if (diaType.equals("erd")) {
 			imageCreator.createDiagramPNG( diaText, imageDiaRealPath + "erd-test.png");
 		} 					
-	}
-	public void updateMindmapDiagram(String projectName, String mindmapDiaText) {
-		Project project = projectDao.getByName(projectName);
-		project.setMindmapDiaText(mindmapDiaText);
-		projectDao.update(project);
-		
 	}
 }

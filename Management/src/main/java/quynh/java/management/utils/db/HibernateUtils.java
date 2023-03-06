@@ -10,6 +10,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import quynh.java.management.mindmap.models.MindMap;
 import quynh.java.management.mindmap.models.MindNode;
+import quynh.java.management.project.models.Mindmap;
 import quynh.java.management.project.models.Project;
 import quynh.java.management.project.models.Usecase;
 import quynh.java.management.project.models.Wireframe;
@@ -36,6 +37,7 @@ public class HibernateUtils {
 		conf.addAnnotatedClass(Project.class);
 		conf.addAnnotatedClass(Usecase.class);
 		conf.addAnnotatedClass(Wireframe.class);
+		conf.addAnnotatedClass(Mindmap.class);
 		ServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(conf.getProperties()).build();
 		FACTORY = conf.buildSessionFactory(registry);
 	}
