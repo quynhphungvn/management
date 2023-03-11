@@ -45,6 +45,12 @@ public class ProjectCreateTable {
 					+ "project_id int not null,"
 					+ "primary key (id))";
 			this.createTable(sqlMindmap, conn);
+			
+			String sqlImgs = "create table if not exists project_image ("
+					+ "id int not null auto_increment,"	
+					+ "path text,"
+					+ "primary key (id))";
+			this.createTable(sqlImgs, conn);
 						
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block

@@ -4,6 +4,7 @@
 		height: 100%;
 	}
 </style>
+
 <div id="project-diagram">
 	<div class="tab">
 		<header class="tab-controls">

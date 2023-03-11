@@ -1,23 +1,32 @@
 package quynh.java.management.project.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 
+import quynh.java.management.project.models.Image;
 import quynh.java.management.project.models.Mindmap;
 import quynh.java.management.project.models.Project;
 import quynh.java.management.project.models.Usecase;
 import quynh.java.management.project.models.Wireframe;
+import quynh.java.management.project.services.ImageServices;
 import quynh.java.management.project.services.MindmapServices;
 import quynh.java.management.project.services.ProjectServices;
 import quynh.java.management.project.services.UsecaseServices;
@@ -26,14 +35,17 @@ import quynh.java.management.project.services.WireframeServices;
 /**
  * Servlet implementation class MindMapController
  */
+@MultipartConfig
 @WebServlet("/project/")
 public class ProjectController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger log = LogManager.getLogger(ProjectController.class);
     private Gson gson = new Gson();
     private ProjectServices projectServices = new ProjectServices();
     private WireframeServices wireframeServices = new WireframeServices();
     private UsecaseServices usecaseServices = new UsecaseServices();
     private MindmapServices mindmapServices = new MindmapServices();
+    private ImageServices imageServices = new ImageServices();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -54,6 +66,7 @@ public class ProjectController extends HttpServlet {
         wireframeServices.setImageDiaRealPath(imgPathFolder);
         usecaseServices.setImageDiaRealPath(imgPathFolder);
         mindmapServices.setImageDiaRealPath(imgPathFolder);
+        log.trace("From Controller");
 		String action = request.getParameter("action");
 		if (action == null) {
 			returnProjectHomePage(request, response);
@@ -131,7 +144,9 @@ public class ProjectController extends HttpServlet {
 	}
 	private void returnProjectHomePage(HttpServletRequest request, HttpServletResponse response) {
 		List<Project> projects = projectServices.getAllProject();
+		List<Image> images = imageServices.getAllImages();
 		request.setAttribute("projects", projects);
+		request.setAttribute("images", images);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/project/index.jsp");
 		try {
 			rd.forward(request, response);
@@ -154,6 +169,22 @@ public class ProjectController extends HttpServlet {
         wireframeServices.setImageDiaRealPath(imgPathFolder);
         usecaseServices.setImageDiaRealPath(imgPathFolder);
         mindmapServices.setImageDiaRealPath(imgPathFolder);
+        imageServices.setImagePathFolder(imgPathFolder + "upload/");
+        System.out.println(imgPathFolder + "upload/");
+        String contentType = request.getHeader("Content-Type");
+        if (contentType.contains("multipart/form-data"))
+        {
+			/*
+			 * Part actionPart = request.getPart("action"); InputStream inputStream =
+			 * actionPart.getInputStream(); Scanner s = new
+			 * Scanner(inputStream).useDelimiter("\\A"); String action = s.hasNext() ?
+			 * s.next() : ""; if (action.equals("UPLOAD-IMAGE")) { Part imagePart =
+			 * request.getPart("image"); imageServices.saveImageUploaded(imagePart); }
+			 */
+        	Part imagePart = request.getPart("image");
+    		imageServices.saveImageUploaded(imagePart);
+        }
+        else {
 		String action = request.getParameter("action");
 		if (action == null) {
 			System.out.println("action is null! and name:" + request.getParameter("projectName"));
@@ -260,6 +291,10 @@ public class ProjectController extends HttpServlet {
 			String sequenceDiaText = request.getParameter("sequence-dia");
 			String projectName = request.getParameter("project-name");
 			usecaseServices.updateActivityDia(usecaseName, wireframeName, projectName, sequenceDiaText);
+		} else if (action.equals("DELETE-IMAGE")) {
+			String uri = request.getParameter("uri");
+			imageServices.deleteImage(uri);
 		}
+	}
 	}		
 }

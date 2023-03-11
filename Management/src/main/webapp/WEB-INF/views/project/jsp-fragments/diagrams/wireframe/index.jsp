@@ -1,3 +1,10 @@
+<style>
+	#wireframe-content {
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+</style>
 <div id="wireframe-content">
 	<form>
 		<select onchange="chooseWireframe()">
@@ -5,8 +12,10 @@
 		</select> <span>
 			<button type="button" class="wireframe-btn-add dialog-btn-open"
 				data-target="#dialog-add-wireframe">+</button>
-			<button type="button" onclick="deleteWireframe()">-</button>
+			<button type="button" onclick="deleteWireframe()">-</button>			
 			<button type="button" onclick="openDialogEditWireframeName()">edit</button>
+			<button type="button" class="wireframe-img-upload dialog-btn-open"
+				data-target="#dialog-img-upload">img</button>
 		</span>
 	</form>
 	<div id="wireframe-subtab" class="tab">
@@ -50,6 +59,7 @@
 	</div>
 	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe/dialog-add.jsp"%>
 	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe/dialog-edit.jsp"%>	
+	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe/img-upload.jsp"%>	
 </div>
 <script>
 function chooseWireframe() {
@@ -83,6 +93,12 @@ function changeUiChooseWireframe(wireframe, usecases) {
 	setUsecaseTabContent(wireframe.name, usecases);
 	refreshDiaImg("wireframe");
 	refreshDiaImg("usecase");
+}
+function setContentWireframeTextarea(wireframeDiaText) {
+	document.querySelector("textarea[name='wireframe']").value = wireframeDiaText;
+}
+function setContentUsecaseTextarea(usecaseDiaText) {
+	document.querySelector("textarea[name='usecase']").value = usecaseDiaText;
 }
 function setUsecaseTabContent(wireframeName, usecases) {
 	document.querySelector("#usecase-content b").innerText = wireframeName;
@@ -145,7 +161,7 @@ function updateWireframeSubTab() {
 		},   
         body: "action=UPDATE-WIREFRAME-DIA" 
         			+ "&wireframe-name="+ wireframeNameSelecting
-        			+ "&wireframe-dia"+ wireframeDiaText
+        			+ "&wireframe-dia="+ wireframeDiaText
         			+ "&project-name="+ current.projectChoosingData.name
     }
     fetch("/Management/project/", options)

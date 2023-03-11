@@ -20,22 +20,32 @@
 		    height: 100vh;
 			}
 			/*  */
-			#aside {
-			    width: 350px;
-			    display: flex;
-			    flex-direction: column;
-			    background-color: #fafafa;
-			    flex-shrink: 0;
-			}
-			#project-list-container {
-			    width: 100%;
-			    height: 400px;
-			}		
+		
+		#aside {
+			width: 350px;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			background-color: #fafafa;
+			flex-shrink: 0;			    
+		}
+		#dia-img-container {
+			height: 100%;
+			flex-grow: 1;
+		}
+		#nav-container {
+			width: 80px;
+			height: 100%;
+		}
+		#project-container {
+			 width: 100%;
+			 height: 400px;
+		}		
 			/*  */
-			#project-diagram-container {
-				width: 100%;
-				flex-grow: 1;
-			} 	
+		#project-diagram-container {
+			width: 100%;
+			flex-grow: 1;
+		} 	
     </style>
 </head>
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+	<Appenders>
+		<File name="LogToFile" fileName="logs/myapp.log"></File>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="LogToFile" />
+		</Root>
+	</Loggers>
+</Configuration>

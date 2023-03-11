@@ -50,12 +50,14 @@ public class WireframeServices {
 		Project project = projectDao.getByName(projectName);
 		Wireframe wireframe = wireframeDao.getByName(wireframeName, project);
 		wireframe.setWireframeDiaText(wireframeDiaText);
+		wireframeDao.update(wireframe);
 		imageCreator.createDiagramPNG(wireframe.getWireframeDiaText(), imageDiaRealPath + "wireframe.png");		
 	}
 	public void updateUsecaseDia(String wireframeName, String usecaseDiaText, String projectName) {
 		Project project = projectDao.getByName(projectName);
 		Wireframe wireframe = wireframeDao.getByName(wireframeName, project);
 		wireframe.setWireframeDiaText(usecaseDiaText);
+		wireframeDao.update(wireframe);
 		imageCreator.createDiagramPNG(wireframe.getWireframeDiaText(), imageDiaRealPath + "usecase.png");		
 	}
 
