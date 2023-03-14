@@ -20,30 +20,24 @@
 		    height: 100vh;
 			}
 			/*  */
-		
+		#l-nav {
+			flex-basis: 80px;
+		}
 		#aside {
-			width: 350px;
-			height: 100%;
+			flex-basis: 350px;		
 			display: flex;
 			flex-direction: column;
 			background-color: #fafafa;
 			flex-shrink: 0;			    
 		}
-		#dia-img-container {
-			height: 100%;
-			flex-grow: 1;
-		}
-		#nav-container {
-			width: 80px;
-			height: 100%;
-		}
-		#project-container {
-			 width: 100%;
-			 height: 400px;
+		#l-projects {
+			 flex-basis: 400px;
 		}		
 			/*  */
-		#project-diagram-container {
-			width: 100%;
+		#l-diagrams {
+			flex-grow: 1;
+		}
+		#l-images {
 			flex-grow: 1;
 		} 	
     </style>
@@ -51,19 +45,19 @@
 
 <body>
     <main id="wrapper">
-    	<div id="nav-container">
+    	<div id="l-nav">
 	        <%@include file="/WEB-INF/views/common/leftbar-fragment/leftbar.jsp"%>
         </div>
         <aside id="aside">
-        	<div id="project-container">
-        		<%@include file="/WEB-INF/views/project/jsp-fragments/projects/index.jsp"%>
+        	<div id="l-projects">
+        		<%@include file="/WEB-INF/views/project/fragments/projects/b-projects.jsp"%>
         	</div>          
-            <div id="project-diagram-container">
-            	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/index.jsp"%>
+            <div id="l-diagrams">
+            	<%@include file="/WEB-INF/views/project/fragments/diagrams/b-diagrams.jsp"%>
             </div>    
         </aside>
-        <main id="dia-img-container">
-            <%@include file="/WEB-INF/views/project/jsp-fragments/diagram-images/index.jsp"%>
+        <main id="l-images">
+            <%@include file="/WEB-INF/views/project/fragments/images/b-images.jsp"%>
         </main>
     </main>
     <script src="/Management/resources/common/js/scripts.js"></script>

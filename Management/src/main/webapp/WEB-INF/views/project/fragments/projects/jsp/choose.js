@@ -34,7 +34,7 @@ function chooseProject(projectItemEl) {
 		refreshDiaProject();
 	}
 	function setWireframeUi(wireframes) {
-		let selectEl = document.querySelector("#wireframe-content form select");
+		let selectEl = document.querySelector("#b-wireframe form select");
 		let optionText = "<option value='default'>Choose Wireframe</option>";
 		for (let i = 0; i < wireframes.length; i++) {
 			let optionEl = "<option value='"+ wireframes[i].name +"'>" + wireframes[i].name + "</option>";
@@ -43,7 +43,7 @@ function chooseProject(projectItemEl) {
 		selectEl.innerHTML = optionText;	
 	}
 	function setMindmapUi(mindmaps) {
-		let selectEl = document.querySelector("#mindmap-content form select");
+		let selectEl = document.querySelector("#b-mindmap form select");
 		let optionText = "<option value='default'>Choose Mindmap</option>";
 		for (let i = 0; i < mindmaps.length; i++) {
 			let optionEl = "<option value='"+ mindmaps[i].name +"'>" + mindmaps[i].name + "</option>";
@@ -56,7 +56,7 @@ function chooseProject(projectItemEl) {
 		document.querySelector('#erd-content textarea').value = project.erdDiaText;
 	}
 	function setActiveProjectUi() {
-		let projectItems = document.querySelector("#project ul")
+		let projectItems = document.querySelector("#b-project ul")
 								.getElementsByClassName("project-item");
 		for (let i = 0; i < projectItems.length; i++) {
 			projectItems[i].classList.remove("active");

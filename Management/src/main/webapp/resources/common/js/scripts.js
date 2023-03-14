@@ -23,20 +23,17 @@ function closeDialog(btn) {
 setUpDialog();
 
 // tab
-function setupTabs(customFunctionTab) {
+function setupTabs() {
     let tabControlsEl = document.getElementsByClassName("tab-controls");
     for (let i = 0; i < tabControlsEl.length; i++) {
         let btns = tabControlsEl[i].getElementsByTagName("button");
         for (let j = 0; j < btns.length; j++) {
             btns[j].addEventListener("click", function() {
                 let btn = btns[j];
-                let tabEl = btn.parentElement.parentElement;
-                let idTarget = btn.dataset.target;
+                let tabEl = btn.parentElement.parentElement;          
                 unactiveAllTabControl(tabEl);
                 closeAllTabContents(tabEl);
-                activeTabControl(btn);
-                showTabContents(idTarget);
-                customFunctionTab(btns[j]);
+                activeTab(btn);       
             });
         } 
     }  
@@ -50,30 +47,16 @@ function unactiveAllTabControl(tabEl) {
 }
 function  closeAllTabContents(tabEl) {
     let tabContents = tabEl.querySelector(".tab-contents")
-            .getElementsByTagName("section");
+            .getElementsByClassName("tab-content");
     for (let i = 0; i < tabContents.length; i++) {
         tabContents[i].style.display = "none";
     }
 }
-function showTabContents(idTarget) {
-    document.querySelector(idTarget).style.display = "block";
-}
-function activeTabControl(btn) {
+function activeTab(btn) {
     btn.classList.add("active");
+    let idTargetContent = btn.dataset.target;
+    document.querySelector(idTargetContent).style.display = "block";
 }
-function customFunctionTab(btn) {
-    let tabContainerEl = btn.parentElement.parentElement;
-    if (tabContainerEl.classList.contains("js-tabname-project"))
-    {
-        customForProject();
-    }
-}
-function customForProject() {
-    console.log("show project!");
-}
-function customForProjectImg() {
-    console.log("show project img!");
-}
-setupTabs(customFunctionTab);
+setupTabs();
 // end tab
  

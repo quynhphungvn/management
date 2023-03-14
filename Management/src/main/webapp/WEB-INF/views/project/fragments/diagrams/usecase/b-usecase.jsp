@@ -36,7 +36,7 @@
 					</div>
 				</form>
 			</section>
-			<section id="usecase-subtab-seq">
+			<section id="usecase-subtab-seq" class="tab-content">
 				<form>
 					<div>
 						<label for="">text</label>

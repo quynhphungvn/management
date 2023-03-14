@@ -4,9 +4,9 @@
 					 quynh.java.management.project.models.Wireframe
 					 "%>
 <style>
-#project {
+#b-project {
 	width: 100%;
-	height: 400px;
+	height: 100%;
 	border: var(--border);
 	display: flex;
 	flex-direction: column;
@@ -16,11 +16,11 @@
 	background-color: #eee;
 }
 
-#project>input {
+#b-project>input {
 	align-self: flex-start;
 }
 
-#project > ul {
+#b-project > ul {
 	align-self: stretch;
 	flex-grow: 1;
 	margin: 0.25rem 0;
@@ -28,38 +28,38 @@
 	border: var(--border);
 }
 
-#project > ul li {
+#b-project > ul li {
 	padding: 0.25rem 0.5rem;
 	border: var(--border);
 }
 
-.project-item {
+#b-project .project-item {
 	display: flex;
 	justify-content: space-between;
 }
 
-.project-item:hover {
+#b-project .project-item:hover {
 	background-color: var(--hover);
 	cursor: pointer;
 }
 
-.project-item>span:first-child {
+#b-project .project-item>span:first-child {
 	flex-grow: 1;
 }
 
-.project-item>span:nth-child(2) {
+#b-project .project-item>span:nth-child(2) {
 	visibility: hidden;
 }
 
-.project-item:hover>span:nth-child(2) {
+#b-project .project-item:hover>span:nth-child(2) {
 	visibility: visible;
 }
 
-.project-item.active {
+#b-project .project-item.active {
 	background-color: var(--active);
 }
 
-#project>button {
+#b-project>button {
 	align-self: end;
 }
 
@@ -75,7 +75,7 @@
 	margin-top: 0.25rem;
 }
 </style>
-<div id="project">
+<div id="b-project">
 	<input type="text" onkeyup="filterProjectItems()" />
 	<ul>
 		<%
@@ -90,9 +90,9 @@
 	<button type="button" class="dialog-btn-open"
 		data-target="#dialog-add-project">+</button>
 	<%@include
-		file="/WEB-INF/views/project/jsp-fragments/projects/jsp/add.jsp"%>
+		file="/WEB-INF/views/project/fragments/projects/jsp/c-dialog-add.jsp"%>
 	<%@include
-		file="/WEB-INF/views/project/jsp-fragments/projects/jsp/edit.jsp"%>
+		file="/WEB-INF/views/project/fragments/projects/jsp/c-dialog-edit.jsp"%>
 </div>
 <script>
  function filterProjectItems() {
@@ -141,5 +141,5 @@
 	        .catch((error) => {console.error('Error:', error)});
 	}
  </script>
-<script><%@include file="/WEB-INF/views/project/jsp-fragments/projects/jsp/choose.js"%></script>
+<script><%@include file="/WEB-INF/views/project/fragments/projects/jsp/choose.js"%></script>
 

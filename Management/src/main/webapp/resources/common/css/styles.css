@@ -10,6 +10,28 @@
     padding: 0;
     box-sizing: border-box;
 }
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #ccc; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa; 
+  cursor: pointer;
+}
 h1 {
     color: red;
 }
@@ -91,16 +113,19 @@ textarea {
     display: flex;
     flex-direction: column;
 }
-.tab header {
-	height: 70px;
+.tab .tab-controls {
+	display: flex;
+	flex-basis: 25px;
+	flex-shrink: 0;
 }
-.tab main {
+.tab .tab-contents {
 	flex-grow: 1;
 }
 .tab .active {
     background-color: var(--active);
 }
-.tab-contents section {
-	padding: 0.25rem;
+.tab-contents .tab-content {
+	width: 100%;
+	height: 100%;
     display: none;
 }

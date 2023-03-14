@@ -1,11 +1,16 @@
 <style>
-	#wireframe-content {
+	#b-wireframe {
 		width: 100%;
 		height: 100%;
 		position: relative;
+		display: flex;
+		flex-direction: column;
+	}
+	#wireframe-subtab {
+		flex-grow: 1;
 	}
 </style>
-<div id="wireframe-content">
+<div id="b-wireframe">
 	<form>
 		<select onchange="chooseWireframe()">
 			<option value="default">Choose Wireframe</option>
@@ -24,7 +29,7 @@
 			<button data-target="#wireframe-subtab-uc">Usecase</button>
 		</header>
 		<main class="tab-contents">
-			<section id="wireframe-subtab-wf">
+			<section id="wireframe-subtab-wf" class="tab-content">
 				<form>
 					<div>
 						<label for="">text</label>
@@ -38,7 +43,7 @@
 					</div>
 				</form>
 			</section>
-			<section id="wireframe-subtab-uc">
+			<section id="wireframe-subtab-uc" class="tab-content">
 				<form>
 					<div>
 						<label for="">text</label>
@@ -57,13 +62,13 @@
 			</section>
 		</main>
 	</div>
-	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe/dialog-add.jsp"%>
-	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe/dialog-edit.jsp"%>	
-	<%@include file="/WEB-INF/views/project/jsp-fragments/diagrams/wireframe/img-upload.jsp"%>	
+	<%@include file="./dialog-add.jsp"%>
+	<%@include file="./dialog-edit.jsp"%>	
+	<%@include file="./img-upload.jsp"%>	
 </div>
 <script>
 function chooseWireframe() {
-	let wireframeName = document.querySelector("#wireframe-content select").value;
+	let wireframeName = document.querySelector("#b-wireframe select").value;
 	console.log(wireframeName);
 	if (wireframeName != "default")
 	{
@@ -111,7 +116,7 @@ function setUsecaseTabContent(wireframeName, usecases) {
 }
 
 function deleteWireframe() {
-	let wireframeName = document.querySelector("#wireframe-content select").value;
+	let wireframeName = document.querySelector("#b-wireframe select").value;
 	if (wireframeName != "default") {
 		if (confirm("Delete " + wireframeName + "?") == true) {
 			sendRequestDeleteWireframe(wireframeName);
@@ -134,7 +139,7 @@ function sendRequestDeleteWireframe(wireframeName) {
         .catch((error) => {console.error('Error:', error)});
 }
 function changeUiDeleteWireframe(wireframeName) {
-	let selectEl = document.querySelector("#wireframe-content select");
+	let selectEl = document.querySelector("#b-wireframe select");
 	let children = selectEl.children;
 	for (let i = 0; i < children.length; i++) {
 		let optionEl = children.item(i);
@@ -145,14 +150,14 @@ function changeUiDeleteWireframe(wireframeName) {
 	}
 }
 function openDialogEditWireframeName() {
-	let wireframeNameSelected = document.querySelector("#wireframe-content select").value;
+	let wireframeNameSelected = document.querySelector("#b-wireframe select").value;
 	document.querySelector("#dialog-edit-wireframe input[name='old-name']").value = wireframeNameSelected;
 	let dialog = document.querySelector("#dialog-edit-wireframe");
 	dialog.show();
 }
 	
 function updateWireframeSubTab() {
-	let wireframeNameSelecting = document.querySelector("#wireframe-content select").value;
+	let wireframeNameSelecting = document.querySelector("#b-wireframe select").value;
 	let wireframeDiaText = document.querySelector("#wireframe-subtab-wf textarea").value;
 	const options = {
         method: 'POST',
@@ -172,7 +177,7 @@ function updateWireframeSubTab() {
 }
 
 function updateUsecaseSubTab() {
-	let wireframeNameSelecting = document.querySelector("#wireframe-content select").value;
+	let wireframeNameSelecting = document.querySelector("#b-wireframe select").value;
 	let usecaseDiaText = document.querySelector("#wireframe-subtab-uc textarea").value;
 	const options = {
         method: 'POST',

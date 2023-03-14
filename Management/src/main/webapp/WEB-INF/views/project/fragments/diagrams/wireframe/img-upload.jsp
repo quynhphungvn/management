@@ -4,7 +4,7 @@
 		height: 100%;
 	}
 	#dialog-img-upload main{
-		max-width: 100%;
+		max-width: 300px;
 		max-height: 100%;
 	}
 	#dialog-img-upload li {
@@ -66,7 +66,7 @@
 
 			    }
 			    fetch("/Management/project/", options)
-			        .then((res) => changeUiDeleteWireframe(wireframeName))
+			        .then((res) => changeUiDeleteWireframe())
 			        .then((data) => console.log(data))
 			        .catch((error) => {console.error('Error:', error)});
 		}
